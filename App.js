@@ -5,13 +5,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
 import { View, Text, Alert } from "react-native"
 import { Button, TextInput } from 'react-native-paper'
+import MainLayout from './src/layouts/MainLayout'
 
 const Stack = createNativeStackNavigator()
 
 const App = () => {
   return (
-    <View>
-      <Text>hello</Text>
+    <View style={{flex:1}}>
+      <MainLayout />
     </View>
   )
 }
