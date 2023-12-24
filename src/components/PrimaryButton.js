@@ -23,7 +23,7 @@ const PrimaryButton = ({ title, styles = [], textStyles = [], outlined = false, 
         ...textStyles
       ]}>
         {title}
-        </Text>
+      </Text>
     </TouchableOpacity>
   )
 }
@@ -41,10 +41,9 @@ const Styles = StyleSheet.create({
   },
   contained: {
     backgroundColor: MyColors.primaryButton,
-    
   },
   outlined: {
-    backgroundColor:'transparent',
+    backgroundColor: 'transparent',
     borderColor: MyColors.primaryButton,
     borderWidth: 1
   },

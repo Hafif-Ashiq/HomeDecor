@@ -1,5 +1,5 @@
 import React from 'react'
-import {  ImageBackground, StyleSheet, View } from 'react-native'
+import { ImageBackground, StyleSheet, View } from 'react-native'
 import { Text } from 'react-native-paper'
 import { start } from '../assets'
 import TextStyles from '../styles/TextStyles'
@@ -41,9 +41,8 @@ const GettingStarted = ({ navigation }) => {
                         Styles.button
                     ]}
                     textStyles={[
-                        TextStyles.semiBold,
                         TextStyles.heading3,
-                        TextStyles.gelasio
+                        TextStyles.gelasio,
                     ]}
                     onPress={() => navigation.navigate("HomeLayout")}
                 />
@@ -73,12 +72,13 @@ const Styles = StyleSheet.create({
     description: {
         textAlign: 'justify',
         lineHeight: 35,
-        width:'85%'
+        width: '85%'
     },
     button: {
         marginTop: "35%",
         paddingVertical: 14,
-        width:"50%",
-        alignSelf:'center'
+        width: "50%",
+        alignSelf: 'center',
+        elevation:10,
     }
 })
