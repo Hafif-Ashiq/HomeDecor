@@ -16,6 +16,9 @@ export default StyleSheet.create({
     descriptionText:{
         color: "#808080"
     },
+    disabledText: {
+        color: "#999999"
+    },
     success:{
         color:"#27AE60"
     },
