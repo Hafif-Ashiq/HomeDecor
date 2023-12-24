@@ -41,13 +41,13 @@ export default StyleSheet.create({
         fontWeight: "600"
     },
     medium: {
-        fontWeight:"500"
+        fontWeight: "500"
     },
     light:{
         fontWeight: "300"
     },
     regular:{
-        fontWeight: 400
+        fontWeight: "400"
     },
     gelasio: {
         fontFamily:"Gelasio"

@@ -1,13 +1,9 @@
 import React from 'react'
-import { Dimensions, ImageBackground, StyleSheet, View } from 'react-native'
-import { Text, Button } from 'react-native-paper'
+import {  ImageBackground, StyleSheet, View } from 'react-native'
+import { Text } from 'react-native-paper'
 import { start } from '../assets'
 import TextStyles from '../styles/TextStyles'
 import PrimaryButton from '../components/PrimaryButton'
-
-// const {height} = Dimensions.get('window')
-
-// const translateYValue = -(height * 0.5);
 
 const GettingStarted = ({ navigation }) => {
     return (
@@ -37,12 +33,10 @@ const GettingStarted = ({ navigation }) => {
                         Styles.description
                     ]}
                 >
-                    The best simple place where you discover most wonderful furnitures and make your home beautiful
+                    The best simple place where you discover most wonderful furnitures and make your home beautiful.
                 </Text>
-                {/* <Button  style={Styles.button} mode='contained' buttonColor='#303030' onPress={() => navigation.navigate("Home")}>Get Started</Button> */}
                 <PrimaryButton
                     title={"Get Started"}
-                    outlined
                     styles={[
                         Styles.button
                     ]}
@@ -51,7 +45,7 @@ const GettingStarted = ({ navigation }) => {
                         TextStyles.heading3,
                         TextStyles.gelasio
                     ]}
-                    onPress={() => navigation.navigate("Home")}
+                    onPress={() => navigation.navigate("HomeLayout")}
                 />
             </View>
         </ImageBackground>
@@ -71,7 +65,7 @@ const Styles = StyleSheet.create({
         justifyContent: "center",
         // position: "absolute",
         alignItems: 'start',
-        width: '85%',
+        width: '100%',
         padding: 30,
         gap: 40,
         top: "10%"
@@ -79,6 +73,7 @@ const Styles = StyleSheet.create({
     description: {
         textAlign: 'justify',
         lineHeight: 35,
+        width:'85%'
     },
     button: {
         marginTop: "35%",
