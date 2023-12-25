@@ -7,6 +7,8 @@ import { View, Text, Alert } from "react-native"
 import { Button, TextInput } from 'react-native-paper'
 import MainLayout from './src/layouts/MainLayout'
 
+import SignIn from './src/Pages/SignIn'
+
 const Stack = createNativeStackNavigator()
 
 const App = () => {
