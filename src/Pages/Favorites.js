@@ -9,6 +9,7 @@ import {
   Image,
 } from 'react-native';
 
+import {ProductTile, Category} from '../components/Home';
 import { CrossIcon, ShoppingBag } from '../components/icons';
 import TextStyles from '../styles/TextStyles';
 import { Button } from 'react-native-paper';

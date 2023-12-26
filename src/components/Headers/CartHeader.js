@@ -1,11 +1,14 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import TextStyles from '../../styles/TextStyles'
-import { CartIcon } from '../icons'
+import { Back } from '../icons'
 
-const FavoriteHeader = () => {
+const CartHeader = ({navigation}) => {
     return (
         <View style={styles.mainView}>
+            <TouchableOpacity activeOpacity={0.9} onPress={() => { navigation.goBack() }} style={styles.backButton}>
+                <Back />
+            </TouchableOpacity>
             <View style={styles.textContainer}>
                 <Text
                     style={[
@@ -16,17 +19,14 @@ const FavoriteHeader = () => {
                         TextStyles.primaryText
                     ]}
                 >
-                    Favorites
+                    My Cart
                 </Text>
             </View>
-            <TouchableOpacity >
-                <CartIcon />
-            </TouchableOpacity>
         </View>
     )
 }
 
-export default FavoriteHeader
+export default CartHeader
 
 
 const styles = StyleSheet.create({
@@ -38,11 +38,20 @@ const styles = StyleSheet.create({
         paddingVertical: 15
     },
     text: {
-        lineHeight: 25,
+        lineHeight: 50,
         textAlign: "center",
     },
     textContainer: {
         flex: 1,
         justifyContent: 'center', // Center vertically
       },
+      backButton: {
+        position: 'absolute',
+        backgroundColor: 'white',
+        top: 19,
+        left: 30,
+        padding: 10,
+        borderRadius: 6,
+        elevation: 5
+      }
 })

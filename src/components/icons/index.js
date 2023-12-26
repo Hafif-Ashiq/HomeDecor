@@ -14,7 +14,7 @@ import Logout from "./Logout";
 import Clock from "./Clock";
 import CrossIcon from "./CrossIcon";
 import Edit from "./Edit";
-
+import Forward from "./Forward";
 export {
     Edit,
     Clock,
@@ -31,6 +31,7 @@ export {
     Armchair,
     Bed,
     Lamp,
-    CrossIcon
+    CrossIcon,
+    Forward
 
 }

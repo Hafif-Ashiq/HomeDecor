@@ -13,7 +13,7 @@ import {useState} from 'react';
 import Eye from '../components/icons/Eye';
 
 const SignIn = ({navigation}) => {
-  
+
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
   const [secured, setSecured] = useState(true);
