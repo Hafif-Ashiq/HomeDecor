@@ -5,11 +5,13 @@ import Product from "./Product";
 import Profile from "./Profile";
 import Settings from "./Settings";
 import SignIn from "./SignIn";
+import SignUp from "./SignUp";
 
 
 export {
     Settings,
     SignIn,
+    SignUp,
     MyOrders,
     Product,
     Profile,
