@@ -12,7 +12,7 @@ const MainLayout = () => {
   return (
     <NavigationContainer theme={{ colors: { background: '#FFFFFF' } }}>
       <Stack.Navigator
-        initialRouteName='Settings'
+      // initialRouteName='Settings'
       >
         <Stack.Screen name='StartPage' component={GettingStarted} options={{ headerShown: false }} />
         {/* Auth Pages */}
