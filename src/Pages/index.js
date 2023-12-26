@@ -5,6 +5,7 @@ import Product from "./Product";
 import Profile from "./Profile";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
+import Favorites from "./Favorites";
 
 export {
     SignIn,
@@ -14,4 +15,5 @@ export {
     Profile,
     GettingStarted,
     Home,
+    Favorites
 }
