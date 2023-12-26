@@ -1,8 +1,8 @@
 import React from 'react'
 import { Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Button } from 'react-native-paper'
-import MyColors from '../styles/MyColors'
-import TextStyles from '../styles/TextStyles'
+import MyColors from '../../styles/MyColors'
+import TextStyles from '../../styles/TextStyles'
 
 
 const PrimaryButton = ({ title, styles = [], textStyles = [], outlined = false, onPress }) => {

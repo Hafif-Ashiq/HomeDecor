@@ -3,7 +3,7 @@ import { ImageBackground, StyleSheet, View } from 'react-native'
 import { Text } from 'react-native-paper'
 import { start } from '../assets'
 import TextStyles from '../styles/TextStyles'
-import PrimaryButton from '../components/PrimaryButton'
+import PrimaryButton from '../components/buttons/PrimaryButton'
 
 const GettingStarted = ({ navigation }) => {
     return (
@@ -79,6 +79,6 @@ const Styles = StyleSheet.create({
         paddingVertical: 14,
         width: "50%",
         alignSelf: 'center',
-        elevation:10,
+        elevation: 10,
     }
 })

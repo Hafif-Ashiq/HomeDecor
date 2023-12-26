@@ -34,8 +34,14 @@ export default StyleSheet.create({
     headerHeading:{
         fontSize:16
     },
+    profileHeading:{
+        fontSize:20
+    },
     textSize1:{
         fontSize:14
+    },
+    textSize2:{
+        fontSize:12
     },
     bold:{
         fontWeight : '700'
@@ -60,5 +66,14 @@ export default StyleSheet.create({
     },
     merriweather:{
         fontFamily: "Merriweather"
+    },
+    justifyText:{
+        textAlign:'justify'
+    },
+    centerText:{
+        textAlign:'center'
+    },
+    rightText:{
+        textAlign:'right'
     }
 })

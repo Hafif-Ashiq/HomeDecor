@@ -6,5 +6,8 @@ export default MyColors = {
     primary: "#303030",
     disabledField: "#F5F5F5",
     svgDisabled: "#909090",
-    
+    textDisabled:"#999999",
+    counterButtonBackground: "#E0E0E0",
+    saveButton:  "#F0F0F0",
+    profileBackground: '#FDFDFD'
 }

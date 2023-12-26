@@ -1,23 +1,21 @@
 
 import React from 'react'
-import { Home } from '../Pages'
+import { Home, Profile } from '../Pages'
 import { TabFavorites, TabHome, TabNotification, TabProfile } from '../components/tabIcons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { HomeHeader } from '../components/Headers';
-import { CartIcon } from '../components/icons';
+import { Header, HomeHeader } from '../components/Headers';
+import ProfileStackLayout from './ProfileStackLayout';
 
 
 
-// const HomeTab = createMaterialBottomTabNavigator()
 const HomeTab = createBottomTabNavigator()
 
 const HomeLayout = () => {
   return (
     <HomeTab.Navigator
-
+      initialRouteName='ProfileStack'
       screenOptions={{
         tabBarShowLabel: false,
-        // headerShown: false,
         tabBarStyle: {
           height: 70,
           elevation: 70,
@@ -46,10 +44,14 @@ const HomeLayout = () => {
         options={{ tabBarIcon: ({ focused }) => <TabNotification focused={focused} dot={false} /> }}
       />
       <HomeTab.Screen
-        name='Profile'
-        component={Home}
-        options={{ tabBarIcon: ({ focused }) => <TabProfile focused={focused} /> }}
+        name='ProfileStack'
+        component={ProfileStackLayout}
+        options={{ 
+          tabBarIcon: ({ focused }) => <TabProfile focused={focused} />, 
+          headerShown:false
+        }}
       />
+      
     </HomeTab.Navigator>
   )
 }

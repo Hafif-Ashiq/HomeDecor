@@ -9,6 +9,7 @@ const ProductTile = ({ title, price, image, onAddToCart }) => {
         <View style={styles.mainView}>
             <View style={styles.imageView}>
                 <Image style={styles.image} source={require("../../assets/start.png")}></Image>
+                {/* source={{uri: image}} */}
                 <TouchableOpacity style={styles.shoppingBag} activeOpacity={0.8}>
                     <ShoppingBag />
                 </TouchableOpacity>
