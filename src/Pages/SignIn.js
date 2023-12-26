@@ -74,7 +74,7 @@ const SignIn = ({ navigation }) => {
           ]}
           onPress={() => navigation.navigate('HomeLayout')}
         />
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=> navigation.navigate('SignUp')}>
           <Text style={[
             TextStyles.nunito,
             TextStyles.heading3,
