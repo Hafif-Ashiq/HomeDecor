@@ -46,7 +46,7 @@ const Header = ({ navigation, title }) => {
                     title == "Profile" ?
                         <TouchableOpacity
                             activeOpacity={0.9}
-                            onPress={() => { navigation.navigate("StartPage") }}
+                            onPress={() => { navigation.navigate("SignIn") }}
                             style={styles.backButton}
                         >
                             <Logout />

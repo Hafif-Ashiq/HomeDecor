@@ -44,7 +44,7 @@ const GettingStarted = ({ navigation }) => {
                         TextStyles.heading3,
                         TextStyles.gelasio,
                     ]}
-                    onPress={() => navigation.navigate("HomeLayout")}
+                    onPress={() => navigation.navigate("SignIn")}
                 />
             </View>
         </ImageBackground>

@@ -1,11 +1,12 @@
 import React from 'react';
-import {View, ImageBackground, StyleSheet, TouchableOpacity} from 'react-native';
-import {Text, TextInput} from 'react-native-paper';
-import {start} from '../assets';
+import { View, ImageBackground, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, TextInput } from 'react-native-paper';
 import TextStyles from '../styles/TextStyles';
-import PrimaryButton from '../components/PrimaryButton';
+import { PrimaryButton } from '../components/buttons';
+import MyColors from '../styles/MyColors';
 
-const SignIn = () => {
+
+const SignIn = ({ navigation }) => {
   return (
     <View style={Styles.mainView}>
       <View style={Styles.welcomeView}>
@@ -74,12 +75,11 @@ const SignIn = () => {
           onPress={() => navigation.navigate('HomeLayout')}
         />
         <TouchableOpacity>
-            <Text style={[
-                TextStyles.nunito,
-                TextStyles.heading3,
-                Styles.SignUp
-
-            ]}>Sign Up</Text>
+          <Text style={[
+            TextStyles.nunito,
+            TextStyles.heading3,
+            Styles.SignUp
+          ]}>Sign Up</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -106,7 +106,7 @@ const Styles = StyleSheet.create({
   textInput: {
     height: 40,
     borderBottomWidth: 1, // Set the thickness of the underline
-    borderColor: '#808080', // Set the color of the underline
+    borderColor: MyColors.secondaryButton, // Set the color of the underline
     paddingHorizontal: 8,
     marginBottom: 5,
     backgroundColor: 'white',
@@ -120,8 +120,8 @@ const Styles = StyleSheet.create({
     alignSelf: 'center',
     width: '80%',
   },
-  SignUp:{
-    alignSelf:"center",
-    marginTop:'5%'
-  }
+  SignUp: {
+    alignSelf: "center",
+    marginTop: '5%'
+  },
 });

@@ -1,7 +1,7 @@
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
-import { GettingStarted, Home, Product, Profile } from '../Pages'
+import { GettingStarted, Home, Product, Profile, SignIn } from '../Pages'
 import HomeLayout from './HomeLayout'
 
 const Stack = createNativeStackNavigator()
@@ -20,20 +20,20 @@ const MainLayout = () => {
   return (
     <NavigationContainer theme={{ colors: { background: '#FFFFFF' } }}>
       <Stack.Navigator
-        initialRouteName='HomeLayout'
+        // initialRouteName='HomeLayout'
         screenOptions={{
           headerShown: false,
         }}
-        
+
       >
         <Stack.Screen name='StartPage' component={GettingStarted} />
         {/* Auth Pages */}
-        {/* <Stack.Screen name='Login' component={Login} /> */}
+        <Stack.Screen name='SignIn' component={SignIn} />
         {/* <Stack.Screen name='Signup' /> */}
         {/* Home Pages */}
         <Stack.Screen name='HomeLayout' component={HomeLayout} />
         <Stack.Screen name='Product' component={Product} />
-        
+
       </Stack.Navigator>
     </NavigationContainer>
   )
