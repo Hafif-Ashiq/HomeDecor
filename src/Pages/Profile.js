@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import TextStyles from '../styles/TextStyles'
 import PageCard from '../components/Profile/PageCard'
 import MyColors from '../styles/MyColors'
 
 const Profile = ({ navigation }) => {
+
+    const [orders, setOrders] = useState(10)
+
     return (
         <View style={styles.mainView}>
             <View style={styles.infoView}>
@@ -37,13 +40,13 @@ const Profile = ({ navigation }) => {
             <View style={styles.cardView}>
                 <PageCard
                     heading={"My Orders"}
-                    subText={`Already have ${10} orders`}
+                    subText={`Already have ${orders} orders`}
                     onPress={() => navigation.navigate("Orders")}
                 />
                 <PageCard
                     heading={"Settings"}
                     subText={`Notification, Password, FAQ, Contact`}
-                    onPress={() => { }}
+                    onPress={() => navigation.navigate("Settings")}
                 />
 
             </View>

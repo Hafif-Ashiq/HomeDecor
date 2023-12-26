@@ -5,7 +5,7 @@ import Counter from '../counter/Counter'
 import TextStyles from '../styles/TextStyles'
 import { Back, Rating } from '../components/icons'
 
-const Product = ({navigation}) => {
+const Product = ({ navigation }) => {
 
   const [quantity, setQuantity] = useState(1)
 
@@ -16,7 +16,7 @@ const Product = ({navigation}) => {
       <View style={styles.imageView}>
         {/* Image */}
         <Image style={styles.image} source={require("../assets/chair.jpg")} />
-        <TouchableOpacity activeOpacity={0.9} onPress={()=>{navigation.navigate("HomeLayout")}} style={styles.backButton}>
+        <TouchableOpacity activeOpacity={0.9} onPress={() => { navigation.goBack() }} style={styles.backButton}>
           <Back />
         </TouchableOpacity>
       </View>
@@ -91,7 +91,7 @@ const Product = ({navigation}) => {
             textStyles={[
               styles.addToCartText
             ]}
-            onPress={()=>{}}
+            onPress={() => { }}
           />
         </View>
       </View>

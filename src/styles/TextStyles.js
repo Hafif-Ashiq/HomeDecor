@@ -1,79 +1,82 @@
 import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
-    primaryText:{
+    primaryText: {
         color: "#303030"
     },
-    primaryText2:{
+    primaryText2: {
         color: "#242424"
     },
     secondaryText: {
         color: "#606060"
     },
-    labelText:{
+    labelText: {
         color: "#909090"
     },
-    descriptionText:{
+    settingsLabelText: {
+        color: '#909191'
+    },
+    descriptionText: {
         color: "#808080"
     },
     disabledText: {
         color: "#999999"
     },
-    success:{
-        color:"#27AE60"
+    success: {
+        color: "#27AE60"
     },
-    heading1:{
+    heading1: {
         fontSize: 30
     },
-    heading2:{
+    heading2: {
         fontSize: 24
     },
-    heading3:{
+    heading3: {
         fontSize: 18
     },
-    headerHeading:{
-        fontSize:16
+    headerHeading: {
+        fontSize: 16
     },
-    profileHeading:{
-        fontSize:20
+    profileHeading: {
+        fontSize: 20
     },
-    textSize1:{
-        fontSize:14
+    textSize1: {
+        fontSize: 14
     },
-    textSize2:{
-        fontSize:12
+    textSize2: {
+        fontSize: 12
     },
-    bold:{
-        fontWeight : '700'
+    bold: {
+        fontWeight: '700'
     },
-    semiBold:{
+    semiBold: {
         fontWeight: "600"
     },
     medium: {
         fontWeight: "500"
     },
-    light:{
+    light: {
         fontWeight: "300"
     },
-    regular:{
+    regular: {
         fontWeight: "400"
     },
     gelasio: {
-        fontFamily:"Gelasio"
+        fontFamily: "Gelasio"
     },
     nunito: {
         fontFamily: "Nunito Sans"
     },
-    merriweather:{
+    merriweather: {
         fontFamily: "Merriweather"
     },
-    justifyText:{
-        textAlign:'justify'
+    justifyText: {
+        textAlign: 'justify'
     },
-    centerText:{
-        textAlign:'center'
+    centerText: {
+        textAlign: 'center'
     },
-    rightText:{
-        textAlign:'right'
+    rightText: {
+        textAlign: 'right'
     }
 })

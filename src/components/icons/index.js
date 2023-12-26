@@ -13,9 +13,10 @@ import Back from "./Back";
 import Logout from "./Logout";
 import Clock from "./Clock";
 import CrossIcon from "./CrossIcon";
-
+import Edit from "./Edit";
 
 export {
+    Edit,
     Clock,
     Logout,
     Back,
