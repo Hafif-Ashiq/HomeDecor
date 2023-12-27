@@ -1,113 +1,76 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Armchair, Bed, Chair, Lamp, Popular, Table } from '../components/icons'
 
 import { ProductTile, Category } from '../components/Home'
+import { firebase } from '@react-native-firebase/firestore'
+import Loader from '../components/Global/Loader'
 
 
 const Home = ({ navigation }) => {
 
     const [active, setActive] = useState(0)
-    const [productsArray,setProductsArray] = useState([])
+    const [productsArray, setProductsArray] = useState([])
+    const [originalArray, setOriginalArray] = useState([])
+    const [isLoaded, setIsLoaded] = useState(false)
 
-    
+    useEffect(() => {
+        filterArray()
+    }, [active, originalArray])
 
-    useEffect(()=>{
-        let array = products
-        
+
+    useEffect(() => {
+
+        const array = []
+        firebase
+            .firestore()
+            .collection('products')
+            .get()
+            .then(response => {
+                response.forEach(
+                    (documentSnapshot) => {
+                        array.push({
+                            id: documentSnapshot.id,
+                            ...documentSnapshot.data(),
+                        }
+                        )
+                    })
+                console.log(array[0])
+                setOriginalArray(array)
+                filterArray()
+            })
+        setIsLoaded(true)
+    }, [])
+
+
+    const filterArray = () => {
+        let array = originalArray
+
         // Alert.alert(JSON.stringify(array))/
         if (categories[active].type == 'popular') {
-            array = array.sort((a, b) => a.rating - b.rating);
+            array = array.sort((a, b) => b.rating - a.rating);
         }
-        else{
-            const type = categories[active].type
-            array = array.filter(item => item[type] && item[type] === true);
+        else {
+            const productType = categories[active].type
+            array = array.filter(item => {
+                return item.type[productType] && item.type[productType] === true
+            });
         }
-        const finalArray = pairArray(array,2)
+        const finalArray = pairArray(array, 2)
         setProductsArray(finalArray)
-        
-    },[active])
-
-    
-
-    const products = [
-        {
-            title: "Black Simple Chair 1",
-            price: 12000,
-            image: "https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            rating: 4.1,
-            is_chair : true
-        },
-        {
-            title: "Black Simple Table 2",
-            price: 12000,
-            image: "https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            rating: 4.2,
-            is_table : true
-        },
-        {
-            title: "Black Simple Lamp 3",
-            price: 12000,
-            image: "https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            rating: 4.9,
-            is_lamp:true,
-        },
-        {
-            title: "Black Simple Bed 4",
-            price: 12000,
-            image: "https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            rating: 4.7,
-            is_bed : true
-        },
-        {
-            title: "Black Simple Bed 5",
-            price: 12000,
-            image: "https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            rating: 3.5,
-            is_bed : true
-        },
-        {
-            title: "Black Simple ArmChair 6",
-            price: 12000,
-            image: "https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            rating: 4.0,
-            is_armchair:true
-        },
-        {
-            title: "Black Simple Chair 7",
-            price: 12000,
-            image: "https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            rating: 4.6,
-            is_chair : true
-        },
-        {
-            title: "Black Simple Chair 8",
-            price: 12000,
-            image: "https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            rating: 4.9,
-            is_chair : true
-        },
-        {
-            title: "Black Simple Table 9",
-            price: 12000,
-            image: "https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            rating: 3.5,
-            is_table : true
-        },
-    ]
-
+    }
 
 
     const categories = [
         {
             label: 'Popular',
             icon: <Popular />,
-            type: "popular" 
+            type: "popular"
         },
         {
             label: "Chair",
             icon: <Chair />,
-            type: "is_chair" 
+            type: "is_chair"
         },
         {
             label: "Table",
@@ -141,10 +104,13 @@ const Home = ({ navigation }) => {
     };
 
 
+    const goToProduct = (item) => {
+        navigation.navigate("Product", { productData: item })
+    }
 
     return (
 
-        <View style={styles.mainView}>
+        <View style={styles.mainView} >
             {/* Categories Horizontal Bar */}
             <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={styles.categoriesView}>
                 {categories.map((category, index) => (
@@ -169,49 +135,54 @@ const Home = ({ navigation }) => {
                 ))}
                 <View style={styles.spacer} ></View>
             </ScrollView>
-            {/* Categories Vertical  */}
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                style={styles.productsView}
-            >
-                {productsArray.map((pair, index) => 
-                    pair.length % 2 == 0 ?
-                        (
-                            <View style={styles.horizontalView} key={index}>
-                                {pair.map((item, index2) => (
+            {/* Products Vertical  */}
+            {isLoaded ?
+
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    style={styles.productsView}
+                >
+                    {productsArray.map((pair, index) =>
+                        pair.length % 2 == 0 ?
+                            (
+                                <View style={styles.horizontalView} key={index}>
+                                    {pair.map((item, index2) => (
+                                        <TouchableOpacity
+                                            style={{ flex: 1 }}
+                                            onPress={() => goToProduct(item)}
+                                            key={index2}
+                                        >
+                                            <ProductTile
+                                                title={item.name}
+                                                price={item.price}
+                                                image={item.images[0]}
+                                            />
+                                        </TouchableOpacity>
+
+                                    ))}
+                                </View>
+                            ) : (
+                                <View style={styles.horizontalView} key={index}>
                                     <TouchableOpacity
                                         style={{ flex: 1 }}
-                                        onPress={() => navigation.navigate("Product")}
-                                        key={index2}
+                                        onPress={() => goToProduct(item)}
+                                        key={pair.length - 1}
                                     >
                                         <ProductTile
-                                            title={item.title}
-                                            price={item.price}
-                                            image={item.image}
+                                            title={pair[0].name}
+                                            price={pair[0].price}
+                                            image={pair[0].images[0]}
                                         />
                                     </TouchableOpacity>
-
-                                ))}
-                            </View>
-                        ) : (
-                            <View style={styles.horizontalView} key={index}>
-                                <TouchableOpacity
-                                    style={{ flex: 1 }}
-                                    onPress={() => navigation.navigate("Product")}
-                                    key={pair.length - 1}
-                                >
-                                    <ProductTile
-                                        title={pair[0].title}
-                                        price={pair[0].price}
-                                        image={pair[0].image}
-                                    />
-                                </TouchableOpacity>
-                                <View style={styles.emptyTile}></View>
-                            </View>
-                        )
-                )}
-                <View style={styles.verticalSpacer}></View>
-            </ScrollView>
+                                    <View style={styles.emptyTile}></View>
+                                </View>
+                            )
+                    )}
+                    <View style={styles.verticalSpacer}></View>
+                </ScrollView>
+                :
+                <Loader />
+            }
         </View>
 
     )
@@ -251,12 +222,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         flex: 1,
         gap: 20,
-        marginTop: 10
+        marginTop: 15
     },
     verticalSpacer: {
         height: 100
     },
-    emptyTile:{
-        flex:1
+    emptyTile: {
+        flex: 1
     }
 })

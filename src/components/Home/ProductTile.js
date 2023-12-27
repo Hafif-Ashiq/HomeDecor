@@ -8,7 +8,7 @@ const ProductTile = ({ title, price, image, onAddToCart }) => {
     return (
         <View style={styles.mainView}>
             <View style={styles.imageView}>
-                <Image style={styles.image} source={require("../../assets/start.png")}></Image>
+                <Image style={styles.image} source={{ uri: image }}></Image>
                 {/* source={{uri: image}} */}
                 <TouchableOpacity style={styles.shoppingBag} activeOpacity={0.8}>
                     <ShoppingBag />
@@ -40,7 +40,7 @@ export default ProductTile
 const styles = StyleSheet.create({
     mainView: {
         flex: 1,
-        gap: 10
+        gap: 10,
     },
     imageView: {
         width: "100%",
@@ -54,14 +54,16 @@ const styles = StyleSheet.create({
         height: "100%"
     },
     textView: {
-        gap: 5
+        gap: 5,
+        flex: 1,
+        // justifyContent: 'space-between'
     },
-    shoppingBag:{
-        backgroundColor:"#60606040",
-        padding:7,
-        borderRadius:6,
-        position:"absolute",
-        right:10,
-        bottom:10,
+    shoppingBag: {
+        backgroundColor: "#60606040",
+        padding: 7,
+        borderRadius: 6,
+        position: "absolute",
+        right: 10,
+        bottom: 10,
     }
 })

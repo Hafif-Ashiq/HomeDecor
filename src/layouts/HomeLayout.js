@@ -3,7 +3,7 @@ import React from 'react'
 import { Home, Profile, Favorites } from '../Pages'
 import { TabFavorites, TabHome, TabNotification, TabProfile } from '../components/tabIcons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Header, HomeHeader,FavoriteHeader } from '../components/Headers';
+import { Header, HomeHeader, FavoriteHeader } from '../components/Headers';
 import ProfileStackLayout from './ProfileStackLayout';
 
 
@@ -14,14 +14,14 @@ const HomeTab = createBottomTabNavigator()
 const HomeLayout = () => {
   return (
     <HomeTab.Navigator
-      initialRouteName='ProfileStack'
+      // initialRouteName='ProfileStack'
       screenOptions={{
         tabBarShowLabel: false,
         tabBarStyle: {
           height: 70,
           elevation: 70,
           backgroundColor: '#FFFFFF',
-          
+
         },
       }}
     >
@@ -30,15 +30,17 @@ const HomeLayout = () => {
         component={Home}
         options={{
           tabBarIcon: ({ focused }) => <TabHome focused={focused} />,
-          header: (props) => <HomeHeader {...props}/>,
+          header: (props) => <HomeHeader {...props} />,
         }}
 
       />
       <HomeTab.Screen
         name='Favorites'
         component={Favorites}
-        options={{ tabBarIcon: ({ focused }) => <TabFavorites focused={focused} />,
-        header:(props)=> <FavoriteHeader {...props} />}}
+        options={{
+          tabBarIcon: ({ focused }) => <TabFavorites focused={focused} />,
+          header: (props) => <FavoriteHeader {...props} />
+        }}
       />
       <HomeTab.Screen
         name='Notifications'
@@ -48,12 +50,12 @@ const HomeLayout = () => {
       <HomeTab.Screen
         name='ProfileStack'
         component={ProfileStackLayout}
-        options={{ 
-          tabBarIcon: ({ focused }) => <TabProfile focused={focused} />, 
-          headerShown:false
+        options={{
+          tabBarIcon: ({ focused }) => <TabProfile focused={focused} />,
+          headerShown: false
         }}
       />
-      
+
     </HomeTab.Navigator>
   )
 }

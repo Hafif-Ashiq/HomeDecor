@@ -3,7 +3,7 @@ import { Rect, Svg } from 'react-native-svg'
 import MyColors from '../styles/MyColors'
 import { TouchableOpacity } from 'react-native'
 
-const Minus = ({ disabled,onPress }) => {
+const Minus = ({ disabled = false, onPress }) => {
     return (
         <TouchableOpacity disabled={disabled ? true : false} activeOpacity={0.8} onPress={onPress}>
             <Svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">

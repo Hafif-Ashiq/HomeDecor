@@ -1,18 +1,18 @@
 import React from 'react';
 import {
   View,
-  ImageBackground,
   StyleSheet,
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import { Text, TextInput } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 import TextStyles from '../styles/TextStyles';
 import { PrimaryButton } from '../components/buttons';
 import MyColors from '../styles/MyColors';
 import { useState } from 'react';
-import Eye from '../components/icons/Eye';
 import AuthInput from '../components/Global/AuthInput';
+import auth, { firebase } from "@react-native-firebase/auth"
+import firestore from '@react-native-firebase/firestore';
 
 const SignUp = ({ navigation }) => {
 
@@ -27,9 +27,34 @@ const SignUp = ({ navigation }) => {
 
   const handleSignUp = async () => {
     auth()
-      .createUserWithEmailAndPassword('jane.doe@example.com', 'SuperSecretPassword!')
-      .then(() => {
-        console.log('User account created & signed in!');
+      .createUserWithEmailAndPassword(email, password)
+      .then((userCredentials) => {
+
+        const newUser = userCredentials.user
+
+        const user = {
+          name: name,
+          profile_pic: null,
+          cart: [],
+          orders: [],
+          favorites: [],
+          notifications: []
+        }
+
+        firestore().collection('users').doc(newUser.uid).set(user).then(res => {
+          console.log("User added");
+        });
+
+        try {
+          AsyncStorage.setItem("user_id", newUser.uid)
+            .then(response => console.log("User ID saved"))
+        }
+        catch (e) {
+          console.log(e)
+        }
+
+        console.log('User account created');
+        navigation.navigate('HomeLayout')
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
@@ -40,7 +65,7 @@ const SignUp = ({ navigation }) => {
           Alert.alert('That email address is invalid!');
         }
 
-        Alert.alert(error);
+        console.log(error.message)
       });
   }
 
@@ -56,78 +81,83 @@ const SignUp = ({ navigation }) => {
         WELCOME
       </Text>
       <View style={Styles.inputView}>
-        <AuthInput
-          label={"Name"}
-          value={name}
-          onChange={setName}
-        />
+        <View>
+          <AuthInput
+            label={"Name"}
+            value={name}
+            onChange={setName}
+          />
 
-        <AuthInput
-          label={"Email"}
-          value={email}
-          onChange={setEmail}
-        />
-        <AuthInput
-          label={"Password"}
-          value={password}
-          onChange={setPassword}
-          isPassword={true}
-          secured={secured}
-          toggleShowPassword={() => setSecured(!secured)}
-        />
-        <AuthInput
-          label={"Confirm Password"}
-          value={confirmPass}
-          onChange={setConfirm}
-          isPassword={true}
-          secured={confirmSecured}
-          toggleShowPassword={() => setConfirmSecured(!confirmSecured)}
-        />
+          <AuthInput
+            label={"Email"}
+            value={email}
+            onChange={setEmail}
+          />
+          <AuthInput
+            label={"Password"}
+            value={password}
+            onChange={setPassword}
+            isPassword={true}
+            secured={secured}
+            toggleShowPassword={() => setSecured(!secured)}
+          />
+          <AuthInput
+            label={"Confirm Password"}
+            value={confirmPass}
+            onChange={setConfirm}
+            isPassword={true}
+            secured={confirmSecured}
+            toggleShowPassword={() => setConfirmSecured(!confirmSecured)}
+          />
+        </View>
 
 
 
-        <PrimaryButton
-          title={'Sign Up'}
-          styles={[Styles.button]}
-          textStyles={[
-            TextStyles.semiBold,
-            TextStyles.heading3,
-            TextStyles.nunito,
-          ]}
-          onPress={() => navigation.navigate('HomeLayout')}
-        />
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            alignSelf: 'center',
-            marginTop: 20,
-          }}>
-          <Text
-            style={[
-              TextStyles.nunito,
+        <View style={Styles.buttonsView}>
+          <PrimaryButton
+            title={'Sign Up'}
+            styles={[Styles.button]}
+            textStyles={[
               TextStyles.semiBold,
-              TextStyles.textSize1,
-              TextStyles.descriptionText,
-            ]}>
-            Already have account?
-          </Text>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('SignIn');
+              TextStyles.heading3,
+              TextStyles.nunito,
+            ]}
+            onPress={handleSignUp}
+          />
+          <View
+            style={{
+              // flex: 1,
+              flexDirection: 'row',
+              alignSelf: 'center',
+              // marginTop: 20,
+              // backgroundColor: "red"
             }}>
             <Text
               style={[
                 TextStyles.nunito,
+                TextStyles.semiBold,
                 TextStyles.textSize1,
-                TextStyles.bold,
+                TextStyles.descriptionText,
               ]}>
-              SIGN IN
+              Already have account?
             </Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('SignIn');
+              }}>
+              <Text
+                style={[
+                  TextStyles.nunito,
+                  TextStyles.textSize1,
+                  TextStyles.bold,
+                ]}>
+                SIGN IN
+              </Text>
+            </TouchableOpacity>
+
+          </View>
 
         </View>
-
       </View>
     </View>
   );
@@ -138,17 +168,19 @@ export default SignUp;
 const Styles = StyleSheet.create({
   mainView: {
     flex: 1,
+    justifyContent: 'center'
   },
   welcomeText: {
     padding: 20,
-    marginTop: 70,
+    marginTop: 50,
   },
   inputView: {
     elevation: 10,
     padding: 30,
     marginRight: 20,
-    height: '75%',
+    height: '70%',
     backgroundColor: 'white',
+    gap: 40
   },
   textInput: {
     height: 40,
@@ -180,4 +212,9 @@ const Styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  buttonsView: {
+    gap: 15,
+    marginBottom: 20,
+    // backgroundColor: 'red'
+  }
 });

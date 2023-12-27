@@ -1,24 +1,49 @@
 import React from 'react';
 import {
   View,
-  ImageBackground,
   StyleSheet,
   TouchableOpacity,
+
 } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
 import TextStyles from '../styles/TextStyles';
 import { PrimaryButton } from '../components/buttons';
-import MyColors from '../styles/MyColors';
 import { useState } from 'react';
-import Eye from '../components/icons/Eye';
-import auth from '@react-native-firebase/auth';
 import AuthInput from '../components/Global/AuthInput';
+import auth from "@react-native-firebase/auth"
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const SignIn = ({ navigation }) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [secured, setSecured] = useState(true);
+
+
+  const handleSignIn = async () => {
+    auth()
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log('User signed in:', user)
+        navigation.navigate('HomeLayout')
+
+        try {
+          AsyncStorage.setItem("user_id", user.uid)
+            .then(response => console.log("User ID saved"))
+        }
+        catch (e) {
+          console.log(e)
+        }
+
+      })
+      .catch((error) => {
+        // Handle sign-in errors
+        console.error('Error signing in:', error);
+        // Display error message or handle accordingly
+      });
+  }
 
 
   return (
@@ -67,7 +92,7 @@ const SignIn = ({ navigation }) => {
               TextStyles.heading3,
               TextStyles.nunito,
             ]}
-            onPress={() => navigation.navigate('HomeLayout')}
+            onPress={handleSignIn}
           />
           <TouchableOpacity style={Styles.SignUpButton} onPress={() => navigation.navigate('SignUp')}>
             <Text style={[TextStyles.nunito, TextStyles.heading3, Styles.SignUp]}>
@@ -89,6 +114,7 @@ const Styles = StyleSheet.create({
   },
   welcomeView: {
     padding: 30,
+    marginTop: 50
   },
   inputView: {
     elevation: 10,

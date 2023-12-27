@@ -18,9 +18,11 @@ import Forward from "./Forward";
 import Visa from "./Visa";
 import MasterCard from "./MasterCard";
 import SuccessPageIcon from "./SuccessPageIcon";
+import SplashScreen from "../../Pages/SplashScreen";
 
 
 export {
+    SplashScreen,
     SuccessPageIcon,
     MasterCard,
     Visa,
@@ -41,5 +43,4 @@ export {
     Lamp,
     CrossIcon,
     Forward,
-
 }

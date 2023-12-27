@@ -15,11 +15,6 @@ const Payment = () => {
     const [expiry, setExpiry] = useState("")
     const [cvv, setCvv] = useState("")
 
-    // const [inFocus, setInFocus] = useState(false)
-
-
-    // const handleBlur = () => setInFocus(false)
-    // const handleFocus = () => setInFocus(true)
 
     useEffect(() => {
         setOriginalNumber(cardNumber)

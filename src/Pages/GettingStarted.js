@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ImageBackground, StyleSheet, View } from 'react-native'
 import { Text } from 'react-native-paper'
 import { start } from '../assets'
@@ -6,6 +6,9 @@ import TextStyles from '../styles/TextStyles'
 import PrimaryButton from '../components/buttons/PrimaryButton'
 
 const GettingStarted = ({ navigation }) => {
+
+
+
     return (
         <ImageBackground
             source={start} // Replace with your image path
@@ -44,7 +47,7 @@ const GettingStarted = ({ navigation }) => {
                         TextStyles.heading3,
                         TextStyles.gelasio,
                     ]}
-                    onPress={() => navigation.navigate("SignIn")}
+                    onPress={() => navigation.navigate("SignUp")}
                 />
             </View>
         </ImageBackground>

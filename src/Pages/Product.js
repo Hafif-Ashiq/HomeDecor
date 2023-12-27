@@ -1,22 +1,33 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Text, View, Image, StyleSheet, Alert, ScrollView, TouchableOpacity } from 'react-native'
 import { PrimaryButton, SaveButton } from '../components/buttons'
 import Counter from '../counter/Counter'
 import TextStyles from '../styles/TextStyles'
 import { Back, Rating } from '../components/icons'
+import { useRoute } from '@react-navigation/native'
 
 const Product = ({ navigation }) => {
+
+  const route = useRoute()
+  const receivedData = route.params?.productData || {}
 
   const [quantity, setQuantity] = useState(1)
 
 
+  useEffect(() => {
+    console.log(receivedData);
+  }, [])
 
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.imageView}>
         {/* Image */}
-        <Image style={styles.image} source={require("../assets/chair.jpg")} />
-        <TouchableOpacity activeOpacity={0.9} onPress={() => { navigation.goBack() }} style={styles.backButton}>
+        <Image style={styles.image} source={{ uri: receivedData.images[0] }} />
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPress={() => { navigation.goBack() }}
+          style={styles.backButton}
+        >
           <Back />
         </TouchableOpacity>
       </View>
@@ -31,7 +42,7 @@ const Product = ({ navigation }) => {
               TextStyles.primaryText
             ]}
           >
-            Black Chair
+            {receivedData.name}
           </Text>
 
           <View style={styles.priceQuantityView}>
@@ -43,15 +54,16 @@ const Product = ({ navigation }) => {
                 TextStyles.primaryText
               ]}
             >
-              Rs. 25,000
+              Rs. {receivedData.price}
             </Text>
             <Counter
               count={quantity}
               onPlus={() => setQuantity(quantity + 1)}
               onMinus={() => setQuantity(quantity - 1)}
-              plusDisabled={false}
               minusDisabled={quantity > 1 ? false : true}
+              plusDisabled={quantity < receivedData.quantity ? false : true}
             />
+
 
           </View>
           <View style={styles.ratingView}>
@@ -64,7 +76,7 @@ const Product = ({ navigation }) => {
                 TextStyles.primaryText
               ]}
             >
-              4.5
+              {receivedData.rating}
             </Text>
           </View>
 
@@ -78,7 +90,7 @@ const Product = ({ navigation }) => {
 
             ]}
           >
-            Minimal Stand is made of by natural wood. The design that is very simple and minimal. This is truly one of the best furnitures in any family for now. With 3 different colors, you can easily select the best match for your home.
+            {receivedData.description}
           </Text>
 
         </View>

@@ -1,12 +1,44 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, StyleSheet, Text, View } from 'react-native'
 import TextStyles from '../styles/TextStyles'
 import PageCard from '../components/Profile/PageCard'
 import MyColors from '../styles/MyColors'
+import { firebase } from '@react-native-firebase/firestore'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import auth from "@react-native-firebase/auth"
 
 const Profile = ({ navigation }) => {
 
-    const [orders, setOrders] = useState(10)
+    const [orders, setOrders] = useState(0)
+    const [name, setName] = useState("")
+    const [email, setEmail] = useState("")
+
+    useEffect(() => {
+        const getUserCreds = async () => {
+            const userId = await AsyncStorage.getItem('user_id')
+
+            setEmail(auth().currentUser.email)
+            firebase.firestore().collection('users').doc(userId).get()
+                .then(response => {
+                    const data = response["_data"]
+                    setName(data["name"])
+                    setOrders(data["orders"].length)
+                }).catch(e => console.error(e))
+
+        }
+        getUserCreds()
+
+    }, [])
+
+    const goToSettings = () => {
+
+        const dataToSend = {
+            name: name,
+            email: email,
+        }
+
+        navigation.navigate("Settings", { info: dataToSend })
+    }
 
     return (
         <View style={styles.mainView}>
@@ -22,7 +54,7 @@ const Profile = ({ navigation }) => {
                             TextStyles.nunito
                         ]}
                     >
-                        Mingyu
+                        {name}
                     </Text>
                     <Text
                         style={[
@@ -33,7 +65,7 @@ const Profile = ({ navigation }) => {
                             TextStyles.descriptionText
                         ]}
                     >
-                        mina_k@gmail.com
+                        {email}
                     </Text>
                 </View>
             </View>
@@ -46,7 +78,7 @@ const Profile = ({ navigation }) => {
                 <PageCard
                     heading={"Settings"}
                     subText={`Notification, Password, FAQ, Contact`}
-                    onPress={() => navigation.navigate("Settings")}
+                    onPress={goToSettings}
                 />
 
             </View>

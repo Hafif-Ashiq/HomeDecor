@@ -3,10 +3,19 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import TextStyles from '../../styles/TextStyles'
 import { Back, CartIcon, Logout } from '../icons'
 import MyColors from '../../styles/MyColors'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 const Header = ({ navigation, title }) => {
 
+
+    const handleLogout = async () => {
+        await AsyncStorage.removeItem("user_id").then((res) => {
+            console.log(res);
+            console.log("Logged Out");
+            navigation.navigate("SignIn")
+        })
+    }
 
     return (
         <View
@@ -47,7 +56,7 @@ const Header = ({ navigation, title }) => {
                     title == "Profile" ?
                         <TouchableOpacity
                             activeOpacity={0.9}
-                            onPress={() => { navigation.navigate("SignIn") }}
+                            onPress={handleLogout}
                             style={styles.backButton}
                         >
                             <Logout />
