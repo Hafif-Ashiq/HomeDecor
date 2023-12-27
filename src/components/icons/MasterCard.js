@@ -2,7 +2,7 @@ import React from 'react'
 import { ClipPath, Defs, G, Path, Rect, Svg } from 'react-native-svg'
 import MyColors from '../../styles/MyColors'
 
-const MasterCard = () => {
+const MasterCard = ({ faded }) => {
     return (
         <Svg xmlns="http://www.w3.org/2000/svg" width="32" height="25" viewBox="0 0 32 25" fill="none">
             <G clipPath="url(#clip0_119_371)">
