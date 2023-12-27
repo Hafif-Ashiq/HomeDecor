@@ -75,7 +75,9 @@ const Settings = () => {
                 <View style={styles.subViews}>
                     <Heading title={"Help Center"} />
                     {/* <Text>{name}</Text> */}
-                    <HelpTile />
+                    <HelpTile title={"FAQs"} />
+                    <HelpTile title={"Contact Us"} />
+                    <HelpTile title={"Privacy & Terms"} />
                 </View>
             </ScrollView>
 

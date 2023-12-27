@@ -1,7 +1,7 @@
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
-import { GettingStarted, Home, Product, Profile, SignIn, SignUp, Settings } from '../Pages'
+import { GettingStarted, Home, Product, Profile, SignIn, SignUp, Settings, MyCart, ShippingPage, Payment } from '../Pages'
 import HomeLayout from './HomeLayout'
 import { Header } from '../components/Headers'
 
@@ -12,7 +12,7 @@ const MainLayout = () => {
   return (
     <NavigationContainer theme={{ colors: { background: '#FFFFFF' } }}>
       <Stack.Navigator
-        initialRouteName='Settings'
+      // initialRouteName='Payment'
       >
         <Stack.Screen name='StartPage' component={GettingStarted} options={{ headerShown: false }} />
         {/* Auth Pages */}
@@ -23,6 +23,11 @@ const MainLayout = () => {
         <Stack.Screen name='Product' component={Product} options={{ headerShown: false }} />
         <Stack.Screen name='Settings' component={Settings}
           options={{ header: (props) => <Header title={"Settings"} {...props} /> }} />
+        <Stack.Screen name='Shipping' component={ShippingPage}
+          options={{ header: (props) => <Header title={"Add Shipping Address"} {...props} /> }} />
+        <Stack.Screen name='Payment' component={Payment}
+          options={{ header: (props) => <Header title={"Add Payment Method"} {...props} /> }} />
+
 
       </Stack.Navigator>
     </NavigationContainer>

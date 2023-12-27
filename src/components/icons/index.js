@@ -15,7 +15,15 @@ import Clock from "./Clock";
 import CrossIcon from "./CrossIcon";
 import Edit from "./Edit";
 import Forward from "./Forward";
+import Visa from "./Visa";
+import MasterCard from "./MasterCard";
+import SuccessPageIcon from "./SuccessPageIcon";
+
+
 export {
+    SuccessPageIcon,
+    MasterCard,
+    Visa,
     Edit,
     Clock,
     Logout,
