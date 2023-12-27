@@ -6,6 +6,8 @@ import Profile from "./Profile";
 import Settings from "./Settings";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
+import Favorites from "./Favorites";
+import MyCart from "./MyCart";
 
 
 export {
@@ -17,4 +19,6 @@ export {
     Profile,
     GettingStarted,
     Home,
+    Favorites,
+    MyCart
 }

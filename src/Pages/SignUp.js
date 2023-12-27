@@ -9,8 +9,20 @@ import {Text, TextInput} from 'react-native-paper';
 import TextStyles from '../styles/TextStyles';
 import {PrimaryButton} from '../components/buttons';
 import MyColors from '../styles/MyColors';
+import {useState} from 'react';
+import Eye from '../components/icons/Eye';
 
 const SignUp = ({navigation}) => {
+
+  const [name,setName] = useState('')
+  const [email,setEmail] = useState('')
+  const [password,setPassword] = useState('')
+  const [confirmPass,setConfirm] = useState('')
+  const [secured, setSecured] = useState(true);
+
+  const toggleVisibility = () => {
+    setSecured(!secured);
+  };
   return (
     <View style={Styles.mainView}>
       <Text
@@ -38,6 +50,8 @@ const SignUp = ({navigation}) => {
             TextStyles.nunito,
             TextStyles.descriptionText,
           ]}
+          value={name}
+          onChangeText={(text)=>setName(text)}
           underlineColorAndroid="transparent"
           placeholder="Enter name"></TextInput>
         <Text
@@ -55,6 +69,8 @@ const SignUp = ({navigation}) => {
             TextStyles.nunito,
             TextStyles.descriptionText,
           ]}
+          value={email}
+          onChangeText={(text)=>setEmail(text)}
           underlineColorAndroid="transparent"
           placeholder="Enter email"></TextInput>
         <Text
@@ -65,6 +81,7 @@ const SignUp = ({navigation}) => {
           ]}>
           Password
         </Text>
+        <View style={Styles.passwordContainer}>
         <TextInput
           style={[
             Styles.textInput,
@@ -72,9 +89,17 @@ const SignUp = ({navigation}) => {
             TextStyles.nunito,
             TextStyles.descriptionText,
           ]}
+          value={password}
+          onChangeText={(text)=>setPassword(text)}
           underlineColorAndroid="transparent"
           placeholder="Enter password"
           secureTextEntry={true}></TextInput>
+          <TouchableOpacity
+            onPress={toggleVisibility}
+            style={Styles.eyeIconContainer}>
+            <Eye style={Styles.eyeIcon} />
+          </TouchableOpacity>
+          </View>
         <Text
           style={[
             TextStyles.nunito,
@@ -83,6 +108,7 @@ const SignUp = ({navigation}) => {
           ]}>
           Confirm Password
         </Text>
+        <View style={Styles.passwordContainer}>
         <TextInput
           style={[
             Styles.textInput,
@@ -90,9 +116,17 @@ const SignUp = ({navigation}) => {
             TextStyles.nunito,
             TextStyles.descriptionText,
           ]}
+          value={confirmPass}
+          onChangeText={(text)=>setConfirm(text)}
           underlineColorAndroid="transparent"
           placeholder="Enter password"
           secureTextEntry={true}></TextInput>
+          <TouchableOpacity
+            onPress={toggleVisibility}
+            style={Styles.eyeIconContainer}>
+            <Eye style={Styles.eyeIcon} />
+          </TouchableOpacity>
+          </View>
         <PrimaryButton
           title={'Sign Up'}
           styles={[Styles.button]}
@@ -164,6 +198,7 @@ const Styles = StyleSheet.create({
     backgroundColor: 'white',
     marginTop: 5,
     marginBottom: 20,
+    flex:1
   },
   button: {
     marginTop: '5%',
@@ -171,5 +206,17 @@ const Styles = StyleSheet.create({
     width: '50%',
     alignSelf: 'center',
     width: '80%',
-  }
+  },
+  eyeIconContainer: {
+    position: 'absolute',
+    right: 0,
+  },
+  eyeIcon: {
+    width: 20, // Set the width and height as needed
+    height: 20,
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 });

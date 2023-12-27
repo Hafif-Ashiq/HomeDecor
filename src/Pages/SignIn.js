@@ -1,12 +1,27 @@
 import React from 'react';
-import { View, ImageBackground, StyleSheet, TouchableOpacity } from 'react-native';
-import { Text, TextInput } from 'react-native-paper';
+import {
+  View,
+  ImageBackground,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
+import {Text, TextInput} from 'react-native-paper';
 import TextStyles from '../styles/TextStyles';
-import { PrimaryButton } from '../components/buttons';
+import {PrimaryButton} from '../components/buttons';
 import MyColors from '../styles/MyColors';
+import {useState} from 'react';
+import Eye from '../components/icons/Eye';
 
+const SignIn = ({navigation}) => {
 
-const SignIn = ({ navigation }) => {
+  const [email,setEmail] = useState('');
+  const [password,setPassword] = useState('');
+  const [secured, setSecured] = useState(true);
+
+  const toggleVisibility = () => {
+    setSecured(!secured);
+  };
+
   return (
     <View style={Styles.mainView}>
       <View style={Styles.welcomeView}>
@@ -44,6 +59,8 @@ const SignIn = ({ navigation }) => {
             TextStyles.nunito,
             TextStyles.descriptionText,
           ]}
+          value={email}
+          onChangeText={(text)=>setEmail(text)}
           underlineColorAndroid="transparent"
           placeholder="Enter email"></TextInput>
         <Text
@@ -54,16 +71,25 @@ const SignIn = ({ navigation }) => {
           ]}>
           Password
         </Text>
-        <TextInput
-          style={[
-            Styles.textInput,
-            TextStyles.textSize1,
-            TextStyles.nunito,
-            TextStyles.descriptionText,
-          ]}
-          underlineColorAndroid="transparent"
-          placeholder="Enter password"
-          secureTextEntry={true}></TextInput>
+        <View style={Styles.passwordContainer}>
+          <TextInput
+            style={[
+              Styles.textInput,
+              TextStyles.textSize1,
+              TextStyles.nunito,
+              TextStyles.descriptionText,
+            ]}
+            value={password}
+          onChangeText={(text)=>setPassword(text)}
+            underlineColorAndroid="transparent"
+            placeholder="Enter password"
+            secureTextEntry={secured}></TextInput>
+          <TouchableOpacity
+            onPress={toggleVisibility}
+            style={Styles.eyeIconContainer}>
+            <Eye style={Styles.eyeIcon} />
+          </TouchableOpacity>
+        </View>
         <PrimaryButton
           title={'Sign In'}
           styles={[Styles.button]}
@@ -74,12 +100,10 @@ const SignIn = ({ navigation }) => {
           ]}
           onPress={() => navigation.navigate('HomeLayout')}
         />
-        <TouchableOpacity onPress={()=> navigation.navigate('SignUp')}>
-          <Text style={[
-            TextStyles.nunito,
-            TextStyles.heading3,
-            Styles.SignUp
-          ]}>Sign Up</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+          <Text style={[TextStyles.nunito, TextStyles.heading3, Styles.SignUp]}>
+            Sign Up
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -112,7 +136,21 @@ const Styles = StyleSheet.create({
     backgroundColor: 'white',
     marginTop: 20,
     marginBottom: 20,
+    flex: 1,
   },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  eyeIconContainer: {
+    position: 'absolute',
+    right: 0,
+  },
+  eyeIcon: {
+    width: 20, // Set the width and height as needed
+    height: 20,
+  },
+
   button: {
     marginTop: '15%',
     paddingVertical: 14,
@@ -121,7 +159,7 @@ const Styles = StyleSheet.create({
     width: '80%',
   },
   SignUp: {
-    alignSelf: "center",
-    marginTop: '5%'
+    alignSelf: 'center',
+    marginTop: '5%',
   },
 });

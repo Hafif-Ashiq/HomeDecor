@@ -1,10 +1,11 @@
 
 import React from 'react'
-import { Home, Profile } from '../Pages'
+import { Home, Profile, Favorites } from '../Pages'
 import { TabFavorites, TabHome, TabNotification, TabProfile } from '../components/tabIcons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Header, HomeHeader } from '../components/Headers';
+import { Header, HomeHeader,FavoriteHeader } from '../components/Headers';
 import ProfileStackLayout from './ProfileStackLayout';
+
 
 
 
@@ -35,8 +36,9 @@ const HomeLayout = () => {
       />
       <HomeTab.Screen
         name='Favorites'
-        component={Home}
-        options={{ tabBarIcon: ({ focused }) => <TabFavorites focused={focused} /> }}
+        component={Favorites}
+        options={{ tabBarIcon: ({ focused }) => <TabFavorites focused={focused} />,
+        header:()=> <FavoriteHeader/>}}
       />
       <HomeTab.Screen
         name='Notifications'
