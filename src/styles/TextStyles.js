@@ -13,6 +13,9 @@ export default StyleSheet.create({
     labelText: {
         color: "#909090"
     },
+    whiteText: {
+        color: '#FFFFFF'
+    },
     settingsLabelText: {
         color: '#909191'
     },

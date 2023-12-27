@@ -8,10 +8,14 @@ import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import Favorites from "./Favorites";
 import MyCart from "./MyCart";
+import ShippingPage from "./ShippingPage";
+import Payment from "./Payment";
 import CheckOut from "./CheckOut";
 
-
 export {
+    Payment,
+    ShippingPage,
+
     Settings,
     SignIn,
     SignUp,

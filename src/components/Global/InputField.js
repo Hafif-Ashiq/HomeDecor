@@ -1,40 +1,74 @@
 import React, { useState } from 'react'
 import { TextInput } from 'react-native-paper'
 import TextStyles from '../../styles/TextStyles'
-import { Alert, StyleSheet } from 'react-native'
+import { Alert, StyleSheet, View } from 'react-native'
 import MyColors from '../../styles/MyColors'
+import { Picker } from '@react-native-picker/picker'
 
-const InputField = ({ inputStyles = [], disabled = false, value, onChange, label }) => {
+const InputField = ({ inputStyles = [], placeholder = "", disabled = false, value, onChange, label, isPassword = false, isNumber = false, disabledPickerItem = "", isPicker = false, pickerOptions = [], maxLength = 100 }) => {
 
 
-    const handleChange = (event) => {
-        // Alert.alert(event.target.value)
-        // setValue(event.target.value)
-        // onChange(event.target.value)
-    }
 
     return (
-        <TextInput
-            label={label}
-            mode='outlined'
-            style={[
-                TextStyles.primaryText2,
-                TextStyles.headerHeading,
-                TextStyles.nunito,
-                TextStyles.semiBold,
-                // disabled ? styles.disabled : styles.enabled,
-                styles.input,
-                ...inputStyles
-            ]}
-            disabled={disabled}
-            selectionColor={disabled ? MyColors.disabledField : MyColors.primaryButton}
-            cursorColor={disabled ? MyColors.disabledField : MyColors.primaryButton}
-            activeOutlineColor={disabled ? MyColors.disabledField : MyColors.primaryButton}
-            outlineColor={disabled ? MyColors.disabledField : "#DBDBDB"}
+        <View>
+            {isPicker ?
 
-            value={value}
-            onChangeText={onChange}
-        />
+                <View style={[styles.picker]}>
+                    <Picker
+                        style={[
+                            { width: "100%" },
+                            TextStyles.primaryText2,
+                            TextStyles.headerHeading,
+                            TextStyles.nunito,
+                            TextStyles.semiBold,
+                        ]}
+                        itemStyle={[
+                            TextStyles.primaryText2,
+                            TextStyles.headerHeading,
+                            TextStyles.nunito,
+                            TextStyles.semiBold,
+                        ]}
+                        // mode='dropdown'
+                        dropdownIconColor={disabled ? MyColors.textDisabled : MyColors.borderColor}
+                        selectedValue={value}
+                        onValueChange={onChange}
+
+                    >
+                        <Picker.Item color={MyColors.textDisabled} label={disabledPickerItem} value="java" enabled={false} />
+                        {pickerOptions.map((item, index) => (
+                            <Picker.Item label={item} value={item} key={index} />
+                        ))}
+                    </Picker>
+                </View>
+                :
+                <TextInput
+                    label={label}
+                    mode='outlined'
+                    style={[
+                        TextStyles.primaryText2,
+                        TextStyles.headerHeading,
+                        TextStyles.nunito,
+                        TextStyles.semiBold,
+                        // disabled ? styles.disabled : styles.enabled,
+                        styles.input,
+                        ...inputStyles
+                    ]}
+                    placeholder={placeholder}
+                    disabled={disabled}
+                    selectionColor={disabled ? MyColors.disabledField : MyColors.primaryButton}
+                    cursorColor={disabled ? MyColors.disabledField : MyColors.primaryButton}
+                    activeOutlineColor={disabled ? MyColors.disabledField : MyColors.primaryButton}
+                    outlineColor={disabled ? MyColors.disabledField : MyColors.borderColor}
+                    keyboardType={isNumber ? "numeric" : "default"}
+                    value={value}
+                    onChangeText={onChange}
+                    secureTextEntry={isPassword ? true : false}
+                    maxLength={maxLength}
+                />
+
+            }
+
+        </View>
     )
 }
 
@@ -51,10 +85,16 @@ const styles = StyleSheet.create({
     },
     enabled: {
         borderWidth: 1,
-        borderColor: "#DBDBDB",
+        borderColor: MyColors.borderColor,
 
     },
     disabled: {
         backgroundColor: MyColors.disabledField
+    },
+    picker: {
+        borderColor: MyColors.borderColor,
+        borderWidth: 1,
+        paddingTop: 10,
+        paddingBottom: 10,
     }
 })
