@@ -15,6 +15,7 @@ import Clock from "./Clock";
 import CrossIcon from "./CrossIcon";
 import Edit from "./Edit";
 import Forward from "./Forward";
+
 export {
     Edit,
     Clock,
@@ -32,6 +33,6 @@ export {
     Bed,
     Lamp,
     CrossIcon,
-    Forward
+    Forward,
 
 }

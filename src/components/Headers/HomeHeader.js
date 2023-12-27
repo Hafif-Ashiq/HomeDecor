@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import TextStyles from '../../styles/TextStyles'
 import { CartIcon } from '../icons'
 
-const HomeHeader = () => {
+const HomeHeader = ({navigation}) => {
     return (
         <View style={styles.mainView}>
             <View></View>
@@ -31,7 +31,7 @@ const HomeHeader = () => {
                     BEAUTIFUL
                 </Text>
             </View>
-            <TouchableOpacity >
+            <TouchableOpacity activeOpacity={0.8} onPress={()=> navigation.navigate('MyCart')}>
                 <CartIcon />
             </TouchableOpacity>
         </View>

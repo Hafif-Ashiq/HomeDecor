@@ -1,6 +1,7 @@
 import React from 'react'
 import { View,} from "react-native"
 import MainLayout from './src/layouts/MainLayout'
+import { CheckOut } from './src/Pages'
 
 const App = () => {
   return (

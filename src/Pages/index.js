@@ -8,6 +8,7 @@ import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import Favorites from "./Favorites";
 import MyCart from "./MyCart";
+import CheckOut from "./CheckOut";
 
 
 export {
@@ -20,5 +21,6 @@ export {
     GettingStarted,
     Home,
     Favorites,
-    MyCart
+    MyCart,
+    CheckOut
 }
