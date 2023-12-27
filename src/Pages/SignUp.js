@@ -4,25 +4,46 @@ import {
   ImageBackground,
   StyleSheet,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
-import {Text, TextInput} from 'react-native-paper';
+import { Text, TextInput } from 'react-native-paper';
 import TextStyles from '../styles/TextStyles';
-import {PrimaryButton} from '../components/buttons';
+import { PrimaryButton } from '../components/buttons';
 import MyColors from '../styles/MyColors';
-import {useState} from 'react';
+import { useState } from 'react';
 import Eye from '../components/icons/Eye';
+import AuthInput from '../components/Global/AuthInput';
 
-const SignUp = ({navigation}) => {
+const SignUp = ({ navigation }) => {
 
-  const [name,setName] = useState('')
-  const [email,setEmail] = useState('')
-  const [password,setPassword] = useState('')
-  const [confirmPass,setConfirm] = useState('')
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPass, setConfirm] = useState('')
   const [secured, setSecured] = useState(true);
+  const [confirmSecured, setConfirmSecured] = useState(true)
 
-  const toggleVisibility = () => {
-    setSecured(!secured);
-  };
+
+
+  const handleSignUp = async () => {
+    auth()
+      .createUserWithEmailAndPassword('jane.doe@example.com', 'SuperSecretPassword!')
+      .then(() => {
+        console.log('User account created & signed in!');
+      })
+      .catch(error => {
+        if (error.code === 'auth/email-already-in-use') {
+          Alert.alert('That email address is already in use!');
+        }
+
+        if (error.code === 'auth/invalid-email') {
+          Alert.alert('That email address is invalid!');
+        }
+
+        Alert.alert(error);
+      });
+  }
+
   return (
     <View style={Styles.mainView}>
       <Text
@@ -35,98 +56,36 @@ const SignUp = ({navigation}) => {
         WELCOME
       </Text>
       <View style={Styles.inputView}>
-        <Text
-          style={[
-            TextStyles.nunito,
-            TextStyles.descriptionText,
-            TextStyles.textSize1,
-          ]}>
-          Name
-        </Text>
-        <TextInput
-          style={[
-            Styles.textInput,
-            TextStyles.textSize1,
-            TextStyles.nunito,
-            TextStyles.descriptionText,
-          ]}
+        <AuthInput
+          label={"Name"}
           value={name}
-          onChangeText={(text)=>setName(text)}
-          underlineColorAndroid="transparent"
-          placeholder="Enter name"></TextInput>
-        <Text
-          style={[
-            TextStyles.nunito,
-            TextStyles.descriptionText,
-            TextStyles.textSize1,
-          ]}>
-          Email
-        </Text>
-        <TextInput
-          style={[
-            Styles.textInput,
-            TextStyles.textSize1,
-            TextStyles.nunito,
-            TextStyles.descriptionText,
-          ]}
+          onChange={setName}
+        />
+
+        <AuthInput
+          label={"Email"}
           value={email}
-          onChangeText={(text)=>setEmail(text)}
-          underlineColorAndroid="transparent"
-          placeholder="Enter email"></TextInput>
-        <Text
-          style={[
-            TextStyles.nunito,
-            TextStyles.descriptionText,
-            TextStyles.textSize1,
-          ]}>
-          Password
-        </Text>
-        <View style={Styles.passwordContainer}>
-        <TextInput
-          style={[
-            Styles.textInput,
-            TextStyles.textSize1,
-            TextStyles.nunito,
-            TextStyles.descriptionText,
-          ]}
+          onChange={setEmail}
+        />
+        <AuthInput
+          label={"Password"}
           value={password}
-          onChangeText={(text)=>setPassword(text)}
-          underlineColorAndroid="transparent"
-          placeholder="Enter password"
-          secureTextEntry={true}></TextInput>
-          <TouchableOpacity
-            onPress={toggleVisibility}
-            style={Styles.eyeIconContainer}>
-            <Eye style={Styles.eyeIcon} />
-          </TouchableOpacity>
-          </View>
-        <Text
-          style={[
-            TextStyles.nunito,
-            TextStyles.descriptionText,
-            TextStyles.textSize1,
-          ]}>
-          Confirm Password
-        </Text>
-        <View style={Styles.passwordContainer}>
-        <TextInput
-          style={[
-            Styles.textInput,
-            TextStyles.textSize1,
-            TextStyles.nunito,
-            TextStyles.descriptionText,
-          ]}
+          onChange={setPassword}
+          isPassword={true}
+          secured={secured}
+          toggleShowPassword={() => setSecured(!secured)}
+        />
+        <AuthInput
+          label={"Confirm Password"}
           value={confirmPass}
-          onChangeText={(text)=>setConfirm(text)}
-          underlineColorAndroid="transparent"
-          placeholder="Enter password"
-          secureTextEntry={true}></TextInput>
-          <TouchableOpacity
-            onPress={toggleVisibility}
-            style={Styles.eyeIconContainer}>
-            <Eye style={Styles.eyeIcon} />
-          </TouchableOpacity>
-          </View>
+          onChange={setConfirm}
+          isPassword={true}
+          secured={confirmSecured}
+          toggleShowPassword={() => setConfirmSecured(!confirmSecured)}
+        />
+
+
+
         <PrimaryButton
           title={'Sign Up'}
           styles={[Styles.button]}
@@ -166,7 +125,9 @@ const SignUp = ({navigation}) => {
               SIGN IN
             </Text>
           </TouchableOpacity>
+
         </View>
+
       </View>
     </View>
   );
@@ -198,7 +159,7 @@ const Styles = StyleSheet.create({
     backgroundColor: 'white',
     marginTop: 5,
     marginBottom: 20,
-    flex:1
+    flex: 1
   },
   button: {
     marginTop: '5%',
