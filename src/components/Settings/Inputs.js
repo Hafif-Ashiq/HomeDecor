@@ -4,7 +4,7 @@ import { TextInput } from 'react-native-paper'
 import TextStyles from '../../styles/TextStyles'
 import InputField from '../Global/InputField'
 
-const Inputs = ({ edit = true, label, value, onChange }) => {
+const Inputs = ({ edit = true, label, value, onChange, isPassword = false }) => {
     return (
         <View >
             {edit ?
@@ -12,7 +12,7 @@ const Inputs = ({ edit = true, label, value, onChange }) => {
                     label={label}
                     value={value}
                     onChange={onChange}
-
+                    isPassword={isPassword}
                 />
                 :
                 <View

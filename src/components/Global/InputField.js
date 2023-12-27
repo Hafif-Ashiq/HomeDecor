@@ -4,14 +4,9 @@ import TextStyles from '../../styles/TextStyles'
 import { Alert, StyleSheet } from 'react-native'
 import MyColors from '../../styles/MyColors'
 
-const InputField = ({ inputStyles = [], disabled = false, value, onChange, label }) => {
+const InputField = ({ inputStyles = [], disabled = false, value, onChange, label, isPassword }) => {
 
 
-    const handleChange = (event) => {
-        // Alert.alert(event.target.value)
-        // setValue(event.target.value)
-        // onChange(event.target.value)
-    }
 
     return (
         <TextInput
@@ -34,6 +29,7 @@ const InputField = ({ inputStyles = [], disabled = false, value, onChange, label
 
             value={value}
             onChangeText={onChange}
+            secureTextEntry={true}
         />
     )
 }
