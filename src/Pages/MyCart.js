@@ -7,7 +7,6 @@ import { PrimaryButton } from '../components/buttons';
 import Counter from '../counter/Counter';
 import { TextInput } from 'react-native-paper';
 import MyColors from '../styles/MyColors';
-import { CartHeader } from '../components/Headers';
 
 const MyCart = ({ navigation }) => {
   const [productsArray, setProductsArray] = useState([]);
@@ -117,7 +116,6 @@ const MyCart = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-        <CartHeader/>
       <FlatList
         data={products}
         renderItem={({ item }) => {

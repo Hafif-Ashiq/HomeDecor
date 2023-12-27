@@ -4,6 +4,7 @@ import TextStyles from '../../styles/TextStyles'
 import { Back, CartIcon, Logout } from '../icons'
 import MyColors from '../../styles/MyColors'
 
+
 const Header = ({ navigation, title }) => {
 
 

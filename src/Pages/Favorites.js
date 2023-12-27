@@ -172,6 +172,7 @@ button: {
     width: '50%',
     alignSelf: 'center',
     width: '92%',
+    elevation:5,
   },
 iconContainer:{
     justifyContent:'space-between',

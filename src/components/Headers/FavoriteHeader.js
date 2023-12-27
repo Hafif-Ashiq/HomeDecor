@@ -2,8 +2,9 @@ import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import TextStyles from '../../styles/TextStyles'
 import { CartIcon } from '../icons'
+import { MyCart } from '../../Pages'
 
-const FavoriteHeader = () => {
+const FavoriteHeader = ({navigation}) => {
     return (
         <View style={styles.mainView}>
             <View style={styles.textContainer}>
@@ -19,8 +20,8 @@ const FavoriteHeader = () => {
                     Favorites
                 </Text>
             </View>
-            <TouchableOpacity >
-                <CartIcon />
+            <TouchableOpacity activeOpacity={0.8} onPress={()=> navigation.navigate('MyCart')}>
+                <CartIcon  small={true} primary={true}/>
             </TouchableOpacity>
         </View>
     )

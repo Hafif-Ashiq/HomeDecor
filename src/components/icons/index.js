@@ -40,6 +40,6 @@ export {
     Bed,
     Lamp,
     CrossIcon,
-    Forward
+    Forward,
 
 }

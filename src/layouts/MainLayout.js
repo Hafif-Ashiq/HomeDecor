@@ -1,9 +1,9 @@
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
-import { GettingStarted, Home, Product, Profile, SignIn, SignUp, Settings, MyCart, ShippingPage, Payment } from '../Pages'
+import { GettingStarted, Home, Product, Profile, SignIn, SignUp, Settings,  MyCart, ShippingPage, Payment } from '../Pages'
 import HomeLayout from './HomeLayout'
-import { Header } from '../components/Headers'
+import { CartHeader, Header } from '../components/Headers'
 
 const Stack = createNativeStackNavigator()
 const MainLayout = () => {
@@ -27,6 +27,8 @@ const MainLayout = () => {
           options={{ header: (props) => <Header title={"Add Shipping Address"} {...props} /> }} />
         <Stack.Screen name='Payment' component={Payment}
           options={{ header: (props) => <Header title={"Add Payment Method"} {...props} /> }} />
+ <Stack.Screen name='MyCart' component={MyCart}
+          options={{ header:(props)=> <Header title={"My Cart"} {...props} />}} />
 
 
       </Stack.Navigator>

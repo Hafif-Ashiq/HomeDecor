@@ -10,6 +10,7 @@ import Favorites from "./Favorites";
 import MyCart from "./MyCart";
 import ShippingPage from "./ShippingPage";
 import Payment from "./Payment";
+import CheckOut from "./CheckOut";
 
 export {
     Payment,
@@ -24,5 +25,6 @@ export {
     GettingStarted,
     Home,
     Favorites,
-    MyCart
+    MyCart,
+    CheckOut
 }

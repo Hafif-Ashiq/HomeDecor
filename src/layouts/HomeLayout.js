@@ -30,7 +30,7 @@ const HomeLayout = () => {
         component={Home}
         options={{
           tabBarIcon: ({ focused }) => <TabHome focused={focused} />,
-          header: () => <HomeHeader />,
+          header: (props) => <HomeHeader {...props}/>,
         }}
 
       />
@@ -38,7 +38,7 @@ const HomeLayout = () => {
         name='Favorites'
         component={Favorites}
         options={{ tabBarIcon: ({ focused }) => <TabFavorites focused={focused} />,
-        header:()=> <FavoriteHeader/>}}
+        header:(props)=> <FavoriteHeader {...props} />}}
       />
       <HomeTab.Screen
         name='Notifications'
