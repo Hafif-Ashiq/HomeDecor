@@ -22,6 +22,7 @@ const SignIn = ({ navigation }) => {
 
 
   const handleSignIn = async () => {
+    console.log("in Signin");
     auth()
       .signInWithEmailAndPassword(email, password)
       .then((userCredential) => {

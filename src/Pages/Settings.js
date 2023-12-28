@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Alert, ScrollView, StyleSheet, View } from 'react-native'
 import Heading from '../components/Settings/Heading'
 import Inputs from '../components/Settings/Inputs'
 import { PrimaryButton } from '../components/buttons'
@@ -124,7 +124,7 @@ const Settings = () => {
                 <View style={styles.subViews}>
                     <Heading title={"Help Center"} />
                     {/* <Text>{name}</Text> */}
-                    <HelpTile title={"FAQs"} />
+                    <HelpTile title={"FAQs"} onPress={uploadAll} />
                     <HelpTile title={"Contact Us"} />
                     <HelpTile title={"Privacy & Terms"} />
                 </View>

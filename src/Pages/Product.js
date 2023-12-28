@@ -5,6 +5,8 @@ import Counter from '../counter/Counter'
 import TextStyles from '../styles/TextStyles'
 import { Back, Rating } from '../components/icons'
 import { useRoute } from '@react-navigation/native'
+import { firebase } from '@react-native-firebase/firestore'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const Product = ({ navigation }) => {
 
@@ -17,6 +19,31 @@ const Product = ({ navigation }) => {
   useEffect(() => {
     console.log(receivedData);
   }, [])
+
+
+  const addToFavorites = async () => {
+
+    const db = firebase.firestore()
+    const userId = await AsyncStorage.getItem("user_id")
+    console.log(userId);
+    console.log(receivedData.id);
+
+    db.collection('users').doc(userId)
+      .get().then((res) => {
+        console.log(res);
+      }).catch(e => console.error(e))
+
+    // console.log((userDoc.exists));
+
+    // userDoc.
+
+    db.collection('users').doc(userId).update({
+      favorites: firebase.firestore.FieldValue.arrayUnion(receivedData.id)
+    }).then(result => {
+      console.log(result);
+      console.log("Product Added to Favorites");
+    }).catch(e => console.log(e))
+  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -96,7 +123,7 @@ const Product = ({ navigation }) => {
         </View>
         <View style={styles.buttonView}>
           {/* Buttons */}
-          <SaveButton onPress={() => Alert.alert('saved')} />
+          <SaveButton onPress={addToFavorites} />
           <PrimaryButton
             title={"Add To Cart"}
             styles={[styles.addToCartButton]}

@@ -1,5 +1,5 @@
-import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import {
   GettingStarted,
@@ -17,7 +17,7 @@ import {
 
 } from '../Pages';
 import HomeLayout from './HomeLayout';
-import {CartHeader, Header} from '../components/Headers';
+import { CartHeader, Header } from '../components/Headers';
 import SplashScreen from '../Pages/SplashScreen'
 
 const Stack = createNativeStackNavigator();
@@ -34,34 +34,38 @@ const MainLayout = () => {
       // initialRouteName='Payment'
       >
         <Stack.Screen name='Splash' component={SplashScreen} options={options} />
-        <Stack.Navigator initialRouteName="StartPage"></Stack.Navigator>
-        <Stack.Screen name='StartPage' component={GettingStarted} options={{ headerShown: false }} />
+
+        <Stack.Screen
+          name='StartPage'
+          component={GettingStarted}
+          options={options}
+        />
         {/* Auth Pages */}
         <Stack.Screen
           name="SignIn"
           component={SignIn}
-          options={{headerShown: false}}
+          options={options}
         />
         <Stack.Screen
           name="SignUp"
           component={SignUp}
-          options={{headerShown: false}}
+          options={options}
         />
-                {/* Home Pages */}
-                <Stack.Screen
+        {/* Home Pages */}
+        <Stack.Screen
           name="HomeLayout"
           component={HomeLayout}
-          options={{headerShown: false}}
+          options={options}
         />
         <Stack.Screen
           name="Product"
           component={Product}
-          options={{headerShown: false}}
+          options={options}
         />
         <Stack.Screen
           name="Settings"
           component={Settings}
-          options={{header: props => <Header title={'Settings'} {...props} />}}
+          options={{ header: props => <Header title={'Settings'} {...props} /> }}
         />
         <Stack.Screen
           name="Shipping"
@@ -82,17 +86,17 @@ const MainLayout = () => {
         <Stack.Screen
           name="MyCart"
           component={MyCart}
-          options={{header: props => <Header title={'My Cart'} {...props} />}}
+          options={{ header: props => <Header title={'My Cart'} {...props} /> }}
         />
         <Stack.Screen
           name="CheckOut"
           component={CheckOut}
-          options={{header: props => <Header title={'Check Out'} {...props} />}}
+          options={{ header: props => <Header title={'Check Out'} {...props} /> }}
         />
         <Stack.Screen
           name="Success"
           component={Success}
-          options={{headerShown: false}}
+          options={options}
         />
 
       </Stack.Navigator>

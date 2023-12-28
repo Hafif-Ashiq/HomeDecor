@@ -13,6 +13,7 @@ import { useState } from 'react';
 import AuthInput from '../components/Global/AuthInput';
 import auth, { firebase } from "@react-native-firebase/auth"
 import firestore from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignUp = ({ navigation }) => {
 
@@ -26,6 +27,7 @@ const SignUp = ({ navigation }) => {
 
 
   const handleSignUp = async () => {
+    console.log("signup");
     auth()
       .createUserWithEmailAndPassword(email, password)
       .then((userCredentials) => {
