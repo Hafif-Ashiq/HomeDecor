@@ -13,7 +13,7 @@ import { CrossIcon, ShoppingBag } from '../components/icons';
 import TextStyles from '../styles/TextStyles';
 import { Button } from 'react-native-paper';
 import { PrimaryButton } from '../components/buttons';
-import { PrimaryButton } from '../components/buttons';
+// import { PrimaryButton } from '../components/buttons';
 import { firebase } from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
@@ -107,14 +107,17 @@ const Favorites = ({ navigation }) => {
                 <Text style={[TextStyles.secondaryText,
                 TextStyles.nunito,
                 TextStyles.semiBold,
-                TextStyles.textSize1]}>{item.title}</Text>
+                TextStyles.textSize1,
+                { marginBottom: 10 }
+
+                ]}>{item.name}</Text>
                 <Text style={[TextStyles.primaryText,
                 TextStyles.nunito,
                 TextStyles.bold,
                 TextStyles.headerHeading]}>Rs. {item.price}</Text>
               </View>
               <View style={styles.iconContainer}>
-                <TouchableOpacity style={styles.crossIcon} activeOpacity={0.8}>
+                <TouchableOpacity style={styles.crossIcon} activeOpacity={0.8} onPress={() => removeFavorite(item.id)}>
                   <CrossIcon />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.shoppingBag} activeOpacity={0.8}>
@@ -125,7 +128,7 @@ const Favorites = ({ navigation }) => {
             </View>
           );
         }}
-        keyExtractor={item => item.title} // Assuming title can be used as a unique key
+        keyExtractor={item => item.id} // Assuming title can be used as a unique key
       />
       <View style={styles.buttonContainer}>
         <PrimaryButton
@@ -149,7 +152,7 @@ const styles = StyleSheet.create({
   productItem: {
     padding: 15,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     borderBottomWidth: 1,
     borderBottomColor: '#E1E1E1',
   },
@@ -161,9 +164,9 @@ const styles = StyleSheet.create({
     marginRight: '6%'
   },
   prodDescript: {
-    justifyContent: 'space-evenly',
+    justifyContent: 'flex-start',
     paddingTop: 5,
-
+    flex: 1
   },
   shoppingBag: {
     backgroundColor: "#60606040",
@@ -183,6 +186,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: '92%',
     elevation: 5,
+    marginBottom: 15,
+    marginTop: 15
   },
   iconContainer: {
     justifyContent: 'space-between',
