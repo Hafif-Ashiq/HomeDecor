@@ -34,7 +34,6 @@ const MainLayout = () => {
       // initialRouteName='Payment'
       >
         <Stack.Screen name='Splash' component={SplashScreen} options={options} />
-
         <Stack.Screen
           name='StartPage'
           component={GettingStarted}

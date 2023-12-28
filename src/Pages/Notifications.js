@@ -146,7 +146,7 @@ const Notifications = ({navigation}) => {
                     TextStyles.primaryText,
                     TextStyles.nunito,
                     TextStyles.bold,
-                    TextStyles.textSize1,
+                    TextStyles.textSize1,{marginBottom:7}
                   ]}>
                   Your order #{item.orderNumber} has been {item.type}
                 </Text>
@@ -162,7 +162,6 @@ const Notifications = ({navigation}) => {
                 >
                   {item.description}
                 </Text>
-                {item.new && <New style={styles.newIcon} />}
               </View>
             </View>
           );
@@ -191,17 +190,12 @@ const styles = StyleSheet.create({
     marginLeft:6
   },
   prodDescript: {
-    justifyContent: 'space-evenly',
-    paddingTop: 5,
     marginRight:86,
-
+    justifyContent:'flex-start'
   },
   iconContainer: {
     justifyContent: 'space-between',
   },
-  newIcon:{
-    
-  }
 });
 
 export default Notifications;

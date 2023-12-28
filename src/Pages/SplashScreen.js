@@ -9,13 +9,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 const SplashScreen = ({ navigation }) => {
 
     useEffect(() => {
-        AsyncStorage.getItem("user_id").then(res => {
-            if (res != null) {
-                navigation.navigate("HomeLayout")
-                return
-            }
-            navigation.navigate("StartPage")
-        })
+        try{
+            AsyncStorage.getItem("user_id").then(res => {
+                if (res != null) {
+                    navigation.navigate("HomeLayout")
+                    return
+                }
+                navigation.navigate("StartPage")
+            })
+        }catch(e){
+            console.log(e);
+        }
     }, [])
 
     return (

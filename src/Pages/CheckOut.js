@@ -23,14 +23,13 @@ import {PrimaryButton} from '../components/buttons';
 import MyColors from '../styles/MyColors';
 
 const CheckOut = ({navigation}) => {
-
-    const [name,setName] = useState('');
-    const [address,setAdress] = useState('');
-    const [payment,setPayment] = useState();
-    const [delivery,setDelivery] = useState('');
-    const [editShipping,setEditShipping] =useState(false);
-    const [editPayment,setEditPayment] =useState(false);
-    const [editDelivery,setEditDelivery] =useState(false);
+  const [name, setName] = useState('');
+  const [address, setAdress] = useState('');
+  const [payment, setPayment] = useState();
+  const [delivery, setDelivery] = useState('');
+  const [editShipping, setEditShipping] = useState(false);
+  const [editPayment, setEditPayment] = useState(false);
+  const [editDelivery, setEditDelivery] = useState(false);
 
   return (
     <View style={styles.container}>
@@ -44,42 +43,46 @@ const CheckOut = ({navigation}) => {
           ]}>
           Shipping Address
         </Text>
-        <TouchableOpacity onPress={() => setEditShipping(!editShipping)}>
+        <TouchableOpacity onPress={() => {}}>
           <Edit fillColor={editShipping} />
         </TouchableOpacity>
       </View>
 
       <View style={styles.addressView}>
-        <TextInput
-          underlineColor="white"
-          placeholder="Enter Name"
-          value={name}
-          disabled = {!editShipping}
-          onChangeText={(text)=>setName(text)}
-          style={{
-            backgroundColor: 'white',
-            borderTopStartRadius: 4,
-            borderColor: MyColors.borderColor,
-            borderWidth: 0.5,
-            elevation:2
-          }}
-        />
-        <TextInput
-          underlineColor="white"
-          placeholder="Address"
-          value={address}
-          disabled = {!editShipping}
-          onChangeText={(text)=>setAdress(text)}
-          style={{
-            backgroundColor: 'white',
-            borderBottomEndRadius: 4,
-            borderColor: MyColors.borderColor,
-            marginTop: 2,
-            height: 70,
-            borderWidth: 0.5,
-            elevation:2
-          }}
-        />
+        <Text
+          style={[
+            {
+              backgroundColor: 'white',
+              borderTopStartRadius: 8,
+              borderColor: 'white',
+              borderWidth: 0.5,
+              elevation: 2,
+              padding: 15,
+            },
+            TextStyles.nunito,
+            TextStyles.bold,
+            TextStyles.heading3,
+            TextStyles.primaryText,
+          ]}>
+          Mingyu
+        </Text>
+        <Text
+          style={[
+            {
+              backgroundColor: 'white',
+              borderBottomEndRadius: 8,
+              borderColor: 'white',
+              marginTop: 4,
+              height: 70,
+              borderWidth: 0.5,
+              elevation: 2,
+              padding: 15,
+            },
+            TextStyles.nunito,
+            TextStyles.textSize1,
+          ]}>
+          House#93, Street#50, F-11/3, Islamabad, Pakistan
+        </Text>
       </View>
       <View style={styles.textBox}>
         <Text
@@ -91,21 +94,25 @@ const CheckOut = ({navigation}) => {
           ]}>
           Payment
         </Text>
-        <TouchableOpacity onPress={()=>{setEditPayment(!editPayment)}}>
+        <TouchableOpacity onPress={() => {}}>
           <Edit fillColor={editPayment} />
         </TouchableOpacity>
       </View>
+
       <View style={styles.cardView}>
         <MasterCard faded={true} />
-        <TextInput
-            underlineColor="white"
-          placeholder="**** **** **** 3947"
-          value={payment}
-          onChangeText={(text)=> setPayment(text)}
-          disabled = {!editPayment}
-          style={styles.cardInput}
-        />
+        <Text
+          style={[
+            styles.cardInput,
+            TextStyles.semiBold,
+            TextStyles.nunito,
+            TextStyles.textSize1,
+            TextStyles.primaryText,
+          ]}>
+          **** **** **** 3947
+        </Text>
       </View>
+
       <View style={styles.textBox}>
         <Text
           style={[
@@ -116,20 +123,22 @@ const CheckOut = ({navigation}) => {
           ]}>
           Delivery Method
         </Text>
-        <TouchableOpacity onPress={()=>{setEditDelivery(!editDelivery)}}>
-          <Edit fillColor={editDelivery}/>
+        <TouchableOpacity onPress={() => {}}>
+          <Edit fillColor={editDelivery} />
         </TouchableOpacity>
       </View>
       <View style={styles.cardView}>
         <Dhl />
-        <TextInput
-          placeholder="Fast (2-3days)"
-          value={delivery}
-          onChangeText={(text)=>{setDelivery}}
-          disabled={!editDelivery}
-          style={styles.cardInput}
-          underlineColor="white"
-        />
+        <Text
+          style={[
+            styles.cardInput,
+            TextStyles.bold,
+            TextStyles.primaryText,
+            TextStyles.textSize1,
+            TextStyles.nunito,
+          ]}>
+          Fast (2-3days)
+        </Text>
       </View>
       <View style={styles.totalView}>
         <View style={styles.view2}>
@@ -228,14 +237,17 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     backgroundColor: 'white',
     elevation: 2,
-    padding: 3,
+    padding: 15,
     borderRadius: 4,
+    paddingLeft: 20,
+  borderColor:'white'
   },
   cardInput: {
     flex: 1,
     backgroundColor: 'white',
     borderWidth: 0,
     borderBottomWidth: 0,
+    marginLeft: 15,
   },
   totalView: {
     elevation: 2,
@@ -243,6 +255,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: 'white',
     borderRadius: 4,
+    marginTop: 15,
+    marginBottom: 5,
   },
   view2: {
     flexDirection: 'row',
@@ -253,7 +267,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     width: '50%',
     alignSelf: 'center',
-    width: '95%',
+    width: '100%',
   },
 });
 

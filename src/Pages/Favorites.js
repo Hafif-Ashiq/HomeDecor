@@ -8,8 +8,11 @@ import {
   Image,
 } from 'react-native';
 
+import { ProductTile, Category } from '../components/Home';
 import { CrossIcon, ShoppingBag } from '../components/icons';
 import TextStyles from '../styles/TextStyles';
+import { Button } from 'react-native-paper';
+import { PrimaryButton } from '../components/buttons';
 import { PrimaryButton } from '../components/buttons';
 import { firebase } from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -94,42 +97,36 @@ const Favorites = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {
-        loading ? <FlatList
-          data={productsArray}
-          renderItem={({ item }) => {
-            return (
-              <View style={styles.productItem}>
-                <Image source={{ uri: item.images[0] }} style={styles.productImage} />
-                <View style={styles.prodDescript}>
-                  <Text style={[TextStyles.secondaryText,
-                  TextStyles.nunito,
-                  TextStyles.semiBold,
-                  TextStyles.textSize1]}>{item.name} </Text>
-                  <Text style={[TextStyles.primaryText,
-                  TextStyles.nunito,
-                  TextStyles.bold,
-                  TextStyles.headerHeading]}>Rs. {item.price}</Text>
-                </View>
-                <View style={styles.iconContainer}>
-                  <TouchableOpacity
-                    style={styles.crossIcon}
-                    activeOpacity={0.8}
-                    onPress={() => removeFavorite(item.id)}
-                  >
-                    <CrossIcon />
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.shoppingBag} activeOpacity={0.8}>
-                    <ShoppingBag fillColor={'black'} />
-                  </TouchableOpacity>
-                </View>
-                {/* Render other details of the product */}
+      <FlatList
+        data={productsArray}
+        renderItem={({ item }) => {
+          return (
+            <View style={styles.productItem}>
+              <Image source={{ uri: item.images[0] }} style={styles.productImage} />
+              <View style={styles.prodDescript}>
+                <Text style={[TextStyles.secondaryText,
+                TextStyles.nunito,
+                TextStyles.semiBold,
+                TextStyles.textSize1]}>{item.title}</Text>
+                <Text style={[TextStyles.primaryText,
+                TextStyles.nunito,
+                TextStyles.bold,
+                TextStyles.headerHeading]}>Rs. {item.price}</Text>
               </View>
-            );
-          }}
-          keyExtractor={item => item.id} // Assuming title can be used as a unique key
-        /> : <></>
-      }
+              <View style={styles.iconContainer}>
+                <TouchableOpacity style={styles.crossIcon} activeOpacity={0.8}>
+                  <CrossIcon />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.shoppingBag} activeOpacity={0.8}>
+                  <ShoppingBag fillColor={'black'} />
+                </TouchableOpacity>
+              </View>
+              {/* Render other details of the product */}
+            </View>
+          );
+        }}
+        keyExtractor={item => item.title} // Assuming title can be used as a unique key
+      />
       <View style={styles.buttonContainer}>
         <PrimaryButton
           title={'Add all to my cart'}
