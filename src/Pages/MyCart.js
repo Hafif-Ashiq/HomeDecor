@@ -179,6 +179,7 @@ const MyCart = ({ navigation }) => {
             TextStyles.profileHeading,
             TextStyles.nunito,
           ]}
+          onPress={()=>navigation.navigate('CheckOut')}
       />
       </View>
     </View>

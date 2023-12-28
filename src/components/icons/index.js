@@ -18,7 +18,8 @@ import Forward from "./Forward";
 import Visa from "./Visa";
 import MasterCard from "./MasterCard";
 import SuccessPageIcon from "./SuccessPageIcon";
-
+import Dhl from "./dhl";
+import New from "./New";
 
 export {
     SuccessPageIcon,
@@ -41,5 +42,7 @@ export {
     Lamp,
     CrossIcon,
     Forward,
+    Dhl,
+    New
 
 }

@@ -4,7 +4,7 @@ import TextStyles from '../../styles/TextStyles'
 import { CartIcon } from '../icons'
 import { MyCart } from '../../Pages'
 
-const FavoriteHeader = ({navigation}) => {
+const NotificationHeader = ({navigation}) => {
     return (
         <View style={styles.mainView}>
             <View style={styles.textContainer}>
@@ -17,18 +17,14 @@ const FavoriteHeader = ({navigation}) => {
                         TextStyles.primaryText
                     ]}
                 >
-                    Favorites
+                    Notifications
                 </Text>
             </View>
-        
-            <TouchableOpacity activeOpacity={0.8} onPress={()=> navigation.navigate('MyCart')}>
-                <CartIcon  small={true} primary={true}/>
-            </TouchableOpacity>
         </View>
     )
 }
 
-export default FavoriteHeader
+export default NotificationHeader
 
 
 const styles = StyleSheet.create({

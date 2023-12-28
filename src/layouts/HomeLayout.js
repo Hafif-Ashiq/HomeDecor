@@ -1,9 +1,9 @@
 
 import React from 'react'
-import { Home, Profile, Favorites } from '../Pages'
+import { Home, Profile, Favorites,Notifications } from '../Pages'
 import { TabFavorites, TabHome, TabNotification, TabProfile } from '../components/tabIcons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Header, HomeHeader,FavoriteHeader } from '../components/Headers';
+import { Header, HomeHeader,FavoriteHeader,NotificationHeader } from '../components/Headers';
 import ProfileStackLayout from './ProfileStackLayout';
 
 
@@ -42,8 +42,11 @@ const HomeLayout = () => {
       />
       <HomeTab.Screen
         name='Notifications'
-        component={Home}
-        options={{ tabBarIcon: ({ focused }) => <TabNotification focused={focused} dot={false} /> }}
+        component={Notifications}
+        options={{ tabBarIcon: ({ focused }) => <TabNotification focused={focused} dot={false} />,
+        header: props => (
+          <NotificationHeader {...props} />
+        ) }}
       />
       <HomeTab.Screen
         name='ProfileStack'

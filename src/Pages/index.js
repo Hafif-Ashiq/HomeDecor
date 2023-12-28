@@ -11,6 +11,8 @@ import MyCart from "./MyCart";
 import ShippingPage from "./ShippingPage";
 import Payment from "./Payment";
 import CheckOut from "./CheckOut";
+import Notifications from "./Notifications";
+import Success from "./Success";
 
 export {
     Payment,
@@ -26,5 +28,7 @@ export {
     Home,
     Favorites,
     MyCart,
-    CheckOut
+    CheckOut,
+    Notifications,
+    Success
 }
