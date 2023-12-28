@@ -6,6 +6,7 @@ import {
   View,
   FlatList,
   Image,
+  ToastAndroid,
 } from 'react-native';
 
 import { ProductTile, Category } from '../components/Home';
@@ -17,6 +18,7 @@ import { PrimaryButton } from '../components/buttons';
 import { firebase } from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
+import addToCart from '../Firebase/AddToCart';
 
 const Favorites = ({ navigation }) => {
   const [loading, setIsLoading] = useState(false);
@@ -92,7 +94,29 @@ const Favorites = ({ navigation }) => {
 
   }
 
+  const getuserID = async () => {
+    const user_id = await AsyncStorage.getItem("user_id")
+    console.log("User ID Set == " + user_id);
 
+    return user_id
+  }
+
+  const allToCart = async () => {
+    const user_id = await getuserID()
+    const promises = productsArray.map(async (product) => {
+      await addToCart(product.id, 1, user_id)
+    })
+
+    Promise.all(promises)
+      .then((results) => {
+        ToastAndroid.showWithGravity("All Items Added to Cart", ToastAndroid.LONG, 10)
+        navigation.navigate("MyCart")
+
+      })
+      .catch((error) => {
+        console.error('Error Adding to cart:', error);
+      });
+  }
 
 
   return (
@@ -111,24 +135,32 @@ const Favorites = ({ navigation }) => {
                 { marginBottom: 10 }
 
                 ]}>{item.name}</Text>
-                <Text style={[TextStyles.primaryText,
-                TextStyles.nunito,
-                TextStyles.bold,
-                TextStyles.headerHeading]}>Rs. {item.price}</Text>
+                <Text
+                  style={[TextStyles.primaryText,
+                  TextStyles.nunito,
+                  TextStyles.bold,
+                  TextStyles.headerHeading]}
+                >
+                  Rs. {item.price}
+                </Text>
               </View>
               <View style={styles.iconContainer}>
-                <TouchableOpacity style={styles.crossIcon} activeOpacity={0.8} onPress={() => removeFavorite(item.id)}>
+                <TouchableOpacity
+                  style={styles.crossIcon}
+                  activeOpacity={0.8}
+                  onPress={() => removeFavorite(item.id)}
+                >
                   <CrossIcon />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.shoppingBag} activeOpacity={0.8}>
                   <ShoppingBag fillColor={'black'} />
                 </TouchableOpacity>
               </View>
-              {/* Render other details of the product */}
+
             </View>
           );
         }}
-        keyExtractor={item => item.id} // Assuming title can be used as a unique key
+        keyExtractor={item => item.id}
       />
       <View style={styles.buttonContainer}>
         <PrimaryButton
@@ -139,6 +171,7 @@ const Favorites = ({ navigation }) => {
             TextStyles.heading3,
             TextStyles.nunito,
           ]}
+          onPress={allToCart}
         />
       </View>
     </View>

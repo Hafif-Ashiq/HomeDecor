@@ -10,7 +10,7 @@ const ProductTile = ({ title, price, image, onAddToCart }) => {
             <View style={styles.imageView}>
                 <Image style={styles.image} source={{ uri: image }}></Image>
                 {/* source={{uri: image}} */}
-                <TouchableOpacity style={styles.shoppingBag} activeOpacity={0.8}>
+                <TouchableOpacity onPress={onAddToCart} style={styles.shoppingBag} activeOpacity={0.8}>
                     <ShoppingBag />
                 </TouchableOpacity>
             </View>

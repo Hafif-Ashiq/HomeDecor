@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Text,
   StyleSheet,
@@ -8,17 +8,79 @@ import {
   Image,
 } from 'react-native';
 
-import {CrossIcon, Forward} from '../components/icons';
+import { CrossIcon, Forward } from '../components/icons';
 import TextStyles from '../styles/TextStyles';
-import {PrimaryButton} from '../components/buttons';
+import { PrimaryButton } from '../components/buttons';
 import Counter from '../counter/Counter';
-import {TextInput} from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import MyColors from '../styles/MyColors';
+import { firebase } from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const MyCart = ({navigation}) => {
+const MyCart = ({ navigation }) => {
   const [productsArray, setProductsArray] = useState([]);
   const [quantityMap, setQuantityMap] = useState({});
   const [total, setTotal] = useState(0);
+  const [userId, setuserId] = useState("")
+
+  const [reload, setReload] = useState(1)
+
+
+
+  useEffect(() => {
+    getCartItems()
+  }, [reload])
+
+  const getCartItems = async () => {
+    let documents = []
+    const user_id = await getuserID()
+    firebase.firestore().collection("users").doc(user_id).collection("cart").get().then(res => {
+      res.forEach((doc) => {
+        documents.push({ id: doc.id, ...doc.data() });
+      })
+      console.log(documents);
+
+      documents = documents.filter((doc) => doc.id != "empty")
+      const prods = []
+
+      const promises = documents.map(async (item) => {
+        const data = await firebase.firestore().collection("products").doc(item.id).get();
+        const productData = data["_data"]
+        productData["id"] = item.id
+        productData['quantity'] = item.quantity // Accessing data using .data()
+        return productData;
+      });
+
+      Promise.all(promises)
+        .then((results) => {
+          prods.push(...results);
+          setProductsArray(prods)
+
+        })
+        .catch((error) => {
+          console.error('Error fetching products:', error);
+        });
+
+    })
+
+  }
+
+  const getuserID = async () => {
+    const user_id = await AsyncStorage.getItem("user_id")
+    setuserId(user_id)
+    console.log("User ID Set == " + userId);
+    return user_id
+  }
+
+  useEffect(() => {
+    productsArray.forEach((product) => {
+      setQuantityMap(prevQuantityMap => ({
+        ...prevQuantityMap,
+        [product.id]: product.quantity,
+      }));
+    })
+  }, [productsArray])
+
 
   const updateQuantity = (productId, newQuantity) => {
     setQuantityMap(prevQuantityMap => ({
@@ -27,8 +89,8 @@ const MyCart = ({navigation}) => {
     }));
     setProductsArray(prevProductsArray =>
       prevProductsArray.map(product =>
-        product.title === productId
-          ? {...product, quantity: newQuantity}
+        product.id === productId
+          ? { ...product, quantity: newQuantity }
           : product,
       ),
     );
@@ -38,102 +100,49 @@ const MyCart = ({navigation}) => {
   const calculateTotal = () => {
     let newTotal = 0;
     for (const product of productsArray) {
-      newTotal += product.price * (quantityMap[product.title] || 1);
+      newTotal += product.price * (quantityMap[product.id] || 1);
     }
     setTotal(newTotal);
   };
 
   useEffect(() => {
-    // Calculate total whenever quantityMap or productsArray changes
     calculateTotal();
   }, [quantityMap, productsArray]);
 
-  const products = [
-    {
-      title: 'Black Simple Chair 1',
-      price: 12000,
-      image:
-        'https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      is_chair: true,
-      quantity: 1,
-    },
-    {
-      title: 'Black Simple Table 2',
-      price: 12000,
-      image:
-        'https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      is_table: true,
-      quantity: 1,
-    },
-    {
-      title: 'Black Simple Lamp 3',
-      price: 12000,
-      image:
-        'https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      is_lamp: true,
-      quantity: 1,
-    },
-    {
-      title: 'Black Simple Bed 4',
-      price: 12000,
-      image:
-        'https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      is_bed: true,
-      quantity: 1,
-    },
-    {
-      title: 'Black Simple Bed 5',
-      price: 12000,
-      image:
-        'https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      is_bed: true,
-      quantity: 1,
-    },
-    {
-      title: 'Black Simple ArmChair 6',
-      price: 12000,
-      image:
-        'https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      is_armchair: true,
-      quantity: 1,
-    },
-    {
-      title: 'Black Simple Chair 7',
-      price: 12000,
-      image:
-        'https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      is_chair: true,
-      quantity: 1,
-    },
-    {
-      title: 'Black Simple Chair 8',
-      price: 12000,
-      image:
-        'https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      is_chair: true,
-      quantity: 1,
-    },
-    {
-      title: 'Black Simple Table 9',
-      price: 12000,
-      image:
-        'https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      is_table: true,
-      quantity: 1,
-    },
-  ];
+
+  const removeFromCart = async (id) => {
+    const user = await getuserID()
+
+    firebase.firestore().collection('users').doc(user).collection('cart').doc(id).delete().then(res => {
+      console.log("Deleted Cart item");
+      let prds = productsArray
+      prds = prds.filter(product => product.id != id)
+      setProductsArray(prds)
+      setReload(reload + 1)
+    }).catch(e => console.error(e))
+  }
+
+  const submitOrder = async () => {
+    try {
+      await AsyncStorage.setItem("order_price", total.toString())
+      navigation.navigate('Shipping')
+    }
+    catch (e) {
+      console.error('Error saving Order Price');
+    }
+  }
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={products}
-        renderItem={({item}) => {
-          const quantity = quantityMap[item.title] || 1;
+        data={productsArray}
+        renderItem={({ item }) => {
+          const quantity = quantityMap[item.id];
 
           return (
             <View style={styles.productItem}>
-              <Image source={{uri: item.image}} style={styles.productImage} />
-              <View style={{justifyContent: 'space-between', flex: 1}}>
+              <Image source={{ uri: item.images[0] }} style={styles.productImage} />
+              <View style={{ justifyContent: 'space-between', flex: 1 }}>
                 <View style={styles.prodDescript}>
                   <Text
                     style={[
@@ -142,7 +151,7 @@ const MyCart = ({navigation}) => {
                       TextStyles.semiBold,
                       TextStyles.textSize1,
                     ]}>
-                    {item.title}
+                    {item.name}
                   </Text>
                   <Text
                     style={[
@@ -154,12 +163,12 @@ const MyCart = ({navigation}) => {
                     Rs. {item.price}
                   </Text>
                 </View>
-                <View style={{width: 100}}>
+                <View style={{ width: 100 }}>
                   <Counter
                     count={quantity}
-                    onPlus={() => updateQuantity(item.title, quantity + 1)}
+                    onPlus={() => updateQuantity(item.id, quantity + 1)}
                     onMinus={() =>
-                      updateQuantity(item.title, Math.max(1, quantity - 1))
+                      updateQuantity(item.id, Math.max(1, quantity - 1))
                     }
                     plusDisabled={false}
                     minusDisabled={quantity > 1 ? false : true}
@@ -167,7 +176,11 @@ const MyCart = ({navigation}) => {
                 </View>
               </View>
               <View style={styles.iconContainer}>
-                <TouchableOpacity style={styles.crossIcon} activeOpacity={0.8}>
+                <TouchableOpacity
+                  style={styles.crossIcon}
+                  activeOpacity={0.8}
+                  onPress={() => removeFromCart(item.id)}
+                >
                   <CrossIcon />
                 </TouchableOpacity>
               </View>
@@ -175,7 +188,7 @@ const MyCart = ({navigation}) => {
             </View>
           );
         }}
-        keyExtractor={item => item.title}
+        keyExtractor={item => item.id}
       />
       <View style={styles.buttonContainer}>
         <View style={styles.promoView}>
@@ -221,7 +234,7 @@ const MyCart = ({navigation}) => {
             TextStyles.profileHeading,
             TextStyles.nunito,
           ]}
-          onPress={() => navigation.navigate('CheckOut')}
+          onPress={submitOrder}
         />
       </View>
     </View>
@@ -237,14 +250,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     elevation: 2,
-    backgroundColor:'white',
-    paddingHorizontal:5,
-    borderRadius:4
+    backgroundColor: 'white',
+    paddingHorizontal: 5,
+    borderRadius: 4
   },
   promo: {
     backgroundColor: 'white',
     paddingHorizontal: 8,
-    flex:1,
+    flex: 1,
     borderColor: MyColors.secondaryButton,
   },
   productItem: {

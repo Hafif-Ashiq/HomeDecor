@@ -7,7 +7,7 @@ import TextStyles from '../styles/TextStyles'
 import { HelpTile } from '../components/Settings'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { firebase } from '@react-native-firebase/auth'
-import { mockProducts } from '../Models'
+import { mockNotifications, mockProducts } from '../Models'
 import { useRoute } from '@react-navigation/native'
 
 const Settings = () => {
@@ -24,6 +24,9 @@ const Settings = () => {
     const [newPassword, setNewPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
 
+
+
+
     useEffect(() => {
         const length = password.length
         setPasswordLabel("*".repeat(length))
@@ -38,7 +41,7 @@ const Settings = () => {
 
 
 
-    const uploadAll = async () => {
+    const uploadAllProducts = async () => {
 
         mockProducts.forEach((item, index) => {
             firebase
@@ -50,6 +53,34 @@ const Settings = () => {
                 .catch(e => console.error(e))
         })
 
+    }
+
+    const getuserID = async () => {
+        const user_id = await AsyncStorage.getItem("user_id")
+        // setuserId(user_id)
+        console.log("User ID Set == " + user_id);
+
+        return user_id
+    }
+
+    uploadAllNotifications = async () => {
+
+        const user_id = await getuserID()
+
+        mockNotifications.forEach((item, index) => {
+            firebase
+                .firestore()
+                .collection('users')
+                .doc(user_id)
+                .collection("notifications")
+                .doc()
+                .set(item)
+                .then(response => {
+                    console.log("Added Notifications" + index)
+                    console.log(response)
+                })
+                .catch(e => console.error(e))
+        })
     }
 
     return (
@@ -124,7 +155,7 @@ const Settings = () => {
                 <View style={styles.subViews}>
                     <Heading title={"Help Center"} />
                     {/* <Text>{name}</Text> */}
-                    <HelpTile title={"FAQs"} onPress={uploadAll} />
+                    <HelpTile title={"FAQs"} onPress={uploadAllNotifications} />
                     <HelpTile title={"Contact Us"} />
                     <HelpTile title={"Privacy & Terms"} />
                 </View>

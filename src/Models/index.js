@@ -291,4 +291,131 @@ const mockProducts = [
 ];
 
 
-export { mockProducts };
+
+
+
+
+
+
+
+
+
+const NotificationModel = {
+    description: "",
+    is_new: "",
+    order_no: "",
+    type: {
+        cancelled: false,
+        confirmed: false,
+        shipped: false
+    }
+}
+
+
+const mockNotifications = [
+    {
+        description: "Your order for a modern sofa has been submitted successfully.",
+        is_new: true,
+        order_no: "SO210001",
+        type: {
+            cancelled: false,
+            confirmed: false,
+            shipped: false
+        }
+    },
+    {
+        description: "Congratulations! Your order for a wooden dining table has been received.",
+        is_new: false,
+        order_no: "SO210002",
+        type: {
+            cancelled: false,
+            confirmed: true,
+            shipped: false
+        }
+    },
+    {
+        description: "Your order for a leather recliner chair is being processed.",
+        is_new: true,
+        order_no: "SO210003",
+        type: {
+            cancelled: false,
+            confirmed: true,
+            shipped: false
+        }
+    },
+    {
+        description: "We regret to inform you that the order for a coffee table is out of stock.",
+        is_new: false,
+        order_no: "SO210004",
+        type: {
+            cancelled: true,
+            confirmed: false,
+            shipped: false
+        }
+    },
+    {
+        description: "Your order for a bedroom set has been confirmed and will be shipped soon.",
+        is_new: true,
+        order_no: "SO210005",
+        type: {
+            cancelled: false,
+            confirmed: true,
+            shipped: true
+        }
+    },
+    {
+        description: "Your order for a bookshelf has been confirmed and is ready for shipment.",
+        is_new: false,
+        order_no: "SO210006",
+        type: {
+            cancelled: false,
+            confirmed: true,
+            shipped: true
+        }
+    },
+    {
+        description: "We are processing your order for a study desk. Thank you for shopping with us.",
+        is_new: true,
+        order_no: "SO210007",
+        type: {
+            cancelled: false,
+            confirmed: true,
+            shipped: false
+        }
+    },
+    {
+        description: "Unfortunately, the order for a floor lamp has been canceled due to stock unavailability.",
+        is_new: false,
+        order_no: "SO210008",
+        type: {
+            cancelled: true,
+            confirmed: false,
+            shipped: false
+        }
+    },
+    {
+        description: "Your order for a set of dining chairs is awaiting confirmation from our warehouse.",
+        is_new: true,
+        order_no: "SO210009",
+        type: {
+            cancelled: false,
+            confirmed: false,
+            shipped: false
+        }
+    },
+    {
+        description: "Great news! Your order for a TV stand has been shipped and is on its way to you.",
+        is_new: false,
+        order_no: "SO210010",
+        type: {
+            cancelled: false,
+            confirmed: true,
+            shipped: true
+        }
+    }
+];
+
+
+
+
+export { mockProducts, mockNotifications };

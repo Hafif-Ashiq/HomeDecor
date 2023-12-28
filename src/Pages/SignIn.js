@@ -25,14 +25,16 @@ const SignIn = ({ navigation }) => {
     console.log("in Signin");
     auth()
       .signInWithEmailAndPassword(email, password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         const user = userCredential.user;
         console.log('User signed in:', user)
         navigation.navigate('HomeLayout')
 
         try {
-          AsyncStorage.setItem("user_id", user.uid)
-            .then(response => console.log("User ID saved"))
+          const idRes = await AsyncStorage.setItem("user_id", user.uid)
+          // console.warn(idRes);
+          console.log("IID Saved");
+
         }
         catch (e) {
           console.log(e)

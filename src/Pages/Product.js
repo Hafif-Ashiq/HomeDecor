@@ -4,9 +4,10 @@ import { PrimaryButton, SaveButton } from '../components/buttons'
 import Counter from '../counter/Counter'
 import TextStyles from '../styles/TextStyles'
 import { Back, Rating } from '../components/icons'
-import { useRoute } from '@react-navigation/native'
+import { useFocusEffect, useRoute } from '@react-navigation/native'
 import { firebase } from '@react-native-firebase/firestore'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import addToCart from '../Firebase/AddToCart'
 
 const Product = ({ navigation }) => {
 
@@ -14,35 +15,62 @@ const Product = ({ navigation }) => {
   const receivedData = route.params?.productData || {}
 
   const [quantity, setQuantity] = useState(1)
+  // const [userId, setuserId] = useState(1)
+  // const [tabFocus, setTabFocus] = useState(true)
+
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     setTabFocus(!tabFocus)
+  //   }, [])
+  // );
+
+
 
 
   useEffect(() => {
     console.log(receivedData);
+
+    async function getId() {
+      const user_id = await getuserID()
+      console.log("In use effect ==>" + user_id);
+    }
+    getId()
   }, [])
 
+  const getuserID = async () => {
+    const user_id = await AsyncStorage.getItem("user_id")
+    // setuserId(user_id)
+    console.log("User ID Set == " + user_id);
+
+    return user_id
+  }
 
   const addToFavorites = async () => {
 
     const db = firebase.firestore()
-    const userId = await AsyncStorage.getItem("user_id")
-    console.log(userId);
+    // const userId = await AsyncStorage.getItem("user_id")
+    // setuserId(userId)
     console.log(receivedData.id);
 
-    db.collection('users').doc(userId)
+    const user_id = await getuserID()
+
+    db.collection('users').doc(user_id)
       .get().then((res) => {
         console.log(res);
       }).catch(e => console.error(e))
 
-    // console.log((userDoc.exists));
-
-    // userDoc.
-
-    db.collection('users').doc(userId).update({
+    db.collection('users').doc(user_id).update({
       favorites: firebase.firestore.FieldValue.arrayUnion(receivedData.id)
     }).then(result => {
       console.log(result);
       console.log("Product Added to Favorites");
     }).catch(e => console.log(e))
+  }
+
+
+  const toCart = async () => {
+    const user_id = await getuserID()
+    addToCart(receivedData.id, quantity, user_id)
   }
 
   return (
@@ -130,7 +158,7 @@ const Product = ({ navigation }) => {
             textStyles={[
               styles.addToCartText
             ]}
-            onPress={() => { }}
+            onPress={toCart}
           />
         </View>
       </View>

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, ScrollView, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native'
 import { Armchair, Bed, Chair, Lamp, Popular, Table } from '../components/icons'
 
 import { ProductTile, Category } from '../components/Home'
 import { firebase } from '@react-native-firebase/firestore'
 import Loader from '../components/Global/Loader'
+import addToCart from '../Firebase/AddToCart'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 const Home = ({ navigation }) => {
@@ -35,7 +37,7 @@ const Home = ({ navigation }) => {
                         }
                         )
                     })
-                console.log(array[0])
+                // console.log(array[0])
                 setOriginalArray(array)
                 filterArray()
             })
@@ -108,6 +110,20 @@ const Home = ({ navigation }) => {
         navigation.navigate("Product", { productData: item })
     }
 
+    const getuserID = async () => {
+        const user_id = await AsyncStorage.getItem("user_id")
+        console.log("User ID Set == " + user_id);
+
+        return user_id
+    }
+
+    const toCart = async (id) => {
+        const user_id = await getuserID()
+        // console.log("here with " + id);
+        await addToCart(id, 1, user_id)
+        ToastAndroid.showWithGravity("Item Added to Cart!", ToastAndroid.CENTER, 10)
+    }
+
     return (
 
         <View style={styles.mainView} >
@@ -156,6 +172,7 @@ const Home = ({ navigation }) => {
                                                 title={item.name}
                                                 price={item.price}
                                                 image={item.images[0]}
+                                                onAddToCart={() => toCart(item.id)}
                                             />
                                         </TouchableOpacity>
 
@@ -172,6 +189,7 @@ const Home = ({ navigation }) => {
                                             title={pair[0].name}
                                             price={pair[0].price}
                                             image={pair[0].images[0]}
+                                            onAddToCart={() => toCart(item.id)}
                                         />
                                     </TouchableOpacity>
                                     <View style={styles.emptyTile}></View>

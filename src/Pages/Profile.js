@@ -6,16 +6,32 @@ import MyColors from '../styles/MyColors'
 import { firebase } from '@react-native-firebase/firestore'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import auth from "@react-native-firebase/auth"
+import { useFocusEffect } from '@react-navigation/native'
 
 const Profile = ({ navigation }) => {
 
     const [orders, setOrders] = useState(0)
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
+    const [userId, setuserId] = useState("")
+
+    const [tabFocus, setTabFocus] = useState(true)
+
+    useFocusEffect(
+        React.useCallback(() => {
+            setTabFocus(!tabFocus)
+        }, [])
+    );
 
     useEffect(() => {
+        console.log("In profile");
+        const getuserID = async () => {
+            const user_id = await AsyncStorage.getItem("user_id")
+            setuserId(user_id)
+            console.log("User ID Set == " + userId);
+        }
         const getUserCreds = async () => {
-            const userId = await AsyncStorage.getItem('user_id')
+            getuserID()
 
             setEmail(auth().currentUser.email)
             firebase.firestore().collection('users').doc(userId).get()
@@ -28,7 +44,7 @@ const Profile = ({ navigation }) => {
         }
         getUserCreds()
 
-    }, [])
+    }, [tabFocus])
 
     const goToSettings = () => {
 

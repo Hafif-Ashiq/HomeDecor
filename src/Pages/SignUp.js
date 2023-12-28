@@ -37,15 +37,29 @@ const SignUp = ({ navigation }) => {
         const user = {
           name: name,
           profile_pic: null,
-          cart: [],
-          orders: [],
+          // cart: [],
+          // orders: [],
           favorites: [],
-          notifications: []
+          // notifications: []
         }
 
-        firestore().collection('users').doc(newUser.uid).set(user).then(res => {
+        const userDoc = firestore().collection('users').doc(newUser.uid)
+        userDoc.set(user).then(userRef => {
           console.log("User added");
-        });
+
+        }).catch(e => console.error("User Creation Error"))
+
+        userDoc.collection('orders').doc("empty").set({}).then(res => {
+          console.log("Orders Collection created Successfully")
+        }).catch(e => console.error("Orders Creation Error"))
+
+        userDoc.collection('cart').doc("empty").set({}).then(res => {
+          console.log("Cart Collection created Successfully")
+        }).catch(e => console.error("Cart Creation Error"))
+
+        userDoc.collection('notifications').doc("empty").set({}).then(res => {
+          console.log("Notifications Collection created Successfully")
+        }).catch(e => console.error("Notifications Creation Error"))
 
         try {
           AsyncStorage.setItem("user_id", newUser.uid)
