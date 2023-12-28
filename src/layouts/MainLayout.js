@@ -18,17 +18,24 @@ import {
 } from '../Pages';
 import HomeLayout from './HomeLayout';
 import {CartHeader, Header} from '../components/Headers';
+import SplashScreen from '../Pages/SplashScreen'
 
 const Stack = createNativeStackNavigator();
 const MainLayout = () => {
+
+  const options = {
+    headerShown: false
+  }
+
+
   return (
-    <NavigationContainer theme={{colors: {background: '#FFFFFF'}}}>
-      <Stack.Navigator initialRouteName="StartPage">
-        <Stack.Screen
-          name="StartPage"
-          component={GettingStarted}
-          options={{headerShown: false}}
-        />
+    <NavigationContainer theme={{ colors: { background: '#FFFFFF' } }}>
+      <Stack.Navigator
+      // initialRouteName='Payment'
+      >
+        <Stack.Screen name='Splash' component={SplashScreen} options={options} />
+        <Stack.Navigator initialRouteName="StartPage"></Stack.Navigator>
+        <Stack.Screen name='StartPage' component={GettingStarted} options={{ headerShown: false }} />
         {/* Auth Pages */}
         <Stack.Screen
           name="SignIn"
@@ -40,8 +47,8 @@ const MainLayout = () => {
           component={SignUp}
           options={{headerShown: false}}
         />
-        {/* Home Pages */}
-        <Stack.Screen
+                {/* Home Pages */}
+                <Stack.Screen
           name="HomeLayout"
           component={HomeLayout}
           options={{headerShown: false}}
@@ -87,6 +94,7 @@ const MainLayout = () => {
           component={Success}
           options={{headerShown: false}}
         />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

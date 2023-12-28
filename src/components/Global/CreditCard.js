@@ -5,18 +5,23 @@ import { MasterCard, Visa } from '../icons'
 import TextStyles from '../../styles/TextStyles'
 import { Defs, LinearGradient, Path, Stop, Svg } from 'react-native-svg'
 
-const CreditCard = ({ text, name, expiry }) => {
+const CreditCard = ({ text, name, expiry, minimized }) => {
 
 
     return (
-        <View style={styles.mainView}>
+        <View style={[styles.mainView, minimized ? styles.small : ""]}>
             {/* Master Card + Visa */}
 
 
-            <View style={styles.companies}>
-                <MasterCard />
-                <Visa />
-            </View>
+            {
+                minimized ?
+                    <></>
+                    :
+                    <View style={[styles.companies]}>
+                        <MasterCard />
+                        <Visa />
+                    </View>
+            }
             <View>
                 <Text style={[
                     styles.cardNumber,
@@ -100,6 +105,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         position: 'relative'
     },
+    small: {
+        height: 100
+    }
+    ,
     companies:
     {
         flexDirection: 'row',

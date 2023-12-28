@@ -64,6 +64,7 @@ const InputField = ({ inputStyles = [], placeholder = "", disabled = false, valu
                     onChangeText={onChange}
                     secureTextEntry={isPassword ? true : false}
                     maxLength={maxLength}
+
                 />
 
             }

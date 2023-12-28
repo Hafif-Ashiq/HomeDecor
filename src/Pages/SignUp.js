@@ -1,28 +1,74 @@
 import React from 'react';
 import {
   View,
-  ImageBackground,
   StyleSheet,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
-import {Text, TextInput} from 'react-native-paper';
+import { Text } from 'react-native-paper';
 import TextStyles from '../styles/TextStyles';
-import {PrimaryButton} from '../components/buttons';
+import { PrimaryButton } from '../components/buttons';
 import MyColors from '../styles/MyColors';
-import {useState} from 'react';
-import Eye from '../components/icons/Eye';
+import { useState } from 'react';
+import AuthInput from '../components/Global/AuthInput';
+import auth, { firebase } from "@react-native-firebase/auth"
+import firestore from '@react-native-firebase/firestore';
 
-const SignUp = ({navigation}) => {
+const SignUp = ({ navigation }) => {
 
-  const [name,setName] = useState('')
-  const [email,setEmail] = useState('')
-  const [password,setPassword] = useState('')
-  const [confirmPass,setConfirm] = useState('')
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPass, setConfirm] = useState('')
   const [secured, setSecured] = useState(true);
+  const [confirmSecured, setConfirmSecured] = useState(true)
 
-  const toggleVisibility = () => {
-    setSecured(!secured);
-  };
+
+
+  const handleSignUp = async () => {
+    auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then((userCredentials) => {
+
+        const newUser = userCredentials.user
+
+        const user = {
+          name: name,
+          profile_pic: null,
+          cart: [],
+          orders: [],
+          favorites: [],
+          notifications: []
+        }
+
+        firestore().collection('users').doc(newUser.uid).set(user).then(res => {
+          console.log("User added");
+        });
+
+        try {
+          AsyncStorage.setItem("user_id", newUser.uid)
+            .then(response => console.log("User ID saved"))
+        }
+        catch (e) {
+          console.log(e)
+        }
+
+        console.log('User account created');
+        navigation.navigate('HomeLayout')
+      })
+      .catch(error => {
+        if (error.code === 'auth/email-already-in-use') {
+          Alert.alert('That email address is already in use!');
+        }
+
+        if (error.code === 'auth/invalid-email') {
+          Alert.alert('That email address is invalid!');
+        }
+
+        console.log(error.message)
+      });
+  }
+
   return (
     <View style={Styles.mainView}>
       <Text
@@ -35,137 +81,82 @@ const SignUp = ({navigation}) => {
         WELCOME
       </Text>
       <View style={Styles.inputView}>
-        <Text
-          style={[
-            TextStyles.nunito,
-            TextStyles.descriptionText,
-            TextStyles.textSize1,
-          ]}>
-          Name
-        </Text>
-        <TextInput
-          style={[
-            Styles.textInput,
-            TextStyles.textSize1,
-            TextStyles.nunito,
-            TextStyles.descriptionText,
-          ]}
-          value={name}
-          onChangeText={(text)=>setName(text)}
-          underlineColorAndroid="transparent"
-          placeholder="Enter name"></TextInput>
-        <Text
-          style={[
-            TextStyles.nunito,
-            TextStyles.descriptionText,
-            TextStyles.textSize1,
-          ]}>
-          Email
-        </Text>
-        <TextInput
-          style={[
-            Styles.textInput,
-            TextStyles.textSize1,
-            TextStyles.nunito,
-            TextStyles.descriptionText,
-          ]}
-          value={email}
-          onChangeText={(text)=>setEmail(text)}
-          underlineColorAndroid="transparent"
-          placeholder="Enter email"></TextInput>
-        <Text
-          style={[
-            TextStyles.nunito,
-            TextStyles.descriptionText,
-            TextStyles.textSize1,
-          ]}>
-          Password
-        </Text>
-        <View style={Styles.passwordContainer}>
-        <TextInput
-          style={[
-            Styles.textInput,
-            TextStyles.textSize1,
-            TextStyles.nunito,
-            TextStyles.descriptionText,
-          ]}
-          value={password}
-          onChangeText={(text)=>setPassword(text)}
-          underlineColorAndroid="transparent"
-          placeholder="Enter password"
-          secureTextEntry={true}></TextInput>
-          <TouchableOpacity
-            onPress={toggleVisibility}
-            style={Styles.eyeIconContainer}>
-            <Eye style={Styles.eyeIcon} />
-          </TouchableOpacity>
-          </View>
-        <Text
-          style={[
-            TextStyles.nunito,
-            TextStyles.descriptionText,
-            TextStyles.textSize1,
-          ]}>
-          Confirm Password
-        </Text>
-        <View style={Styles.passwordContainer}>
-        <TextInput
-          style={[
-            Styles.textInput,
-            TextStyles.textSize1,
-            TextStyles.nunito,
-            TextStyles.descriptionText,
-          ]}
-          value={confirmPass}
-          onChangeText={(text)=>setConfirm(text)}
-          underlineColorAndroid="transparent"
-          placeholder="Enter password"
-          secureTextEntry={true}></TextInput>
-          <TouchableOpacity
-            onPress={toggleVisibility}
-            style={Styles.eyeIconContainer}>
-            <Eye style={Styles.eyeIcon} />
-          </TouchableOpacity>
-          </View>
-        <PrimaryButton
-          title={'Sign Up'}
-          styles={[Styles.button]}
-          textStyles={[
-            TextStyles.semiBold,
-            TextStyles.heading3,
-            TextStyles.nunito,
-          ]}
-          onPress={() => navigation.navigate('HomeLayout')}
-        />
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            alignSelf: 'center',
-            marginTop: 20,
-          }}>
-          <Text
-            style={[
-              TextStyles.nunito,
+        <View>
+          <AuthInput
+            label={"Name"}
+            value={name}
+            onChange={setName}
+          />
+
+          <AuthInput
+            label={"Email"}
+            value={email}
+            onChange={setEmail}
+          />
+          <AuthInput
+            label={"Password"}
+            value={password}
+            onChange={setPassword}
+            isPassword={true}
+            secured={secured}
+            toggleShowPassword={() => setSecured(!secured)}
+          />
+          <AuthInput
+            label={"Confirm Password"}
+            value={confirmPass}
+            onChange={setConfirm}
+            isPassword={true}
+            secured={confirmSecured}
+            toggleShowPassword={() => setConfirmSecured(!confirmSecured)}
+          />
+        </View>
+
+
+
+        <View style={Styles.buttonsView}>
+          <PrimaryButton
+            title={'Sign Up'}
+            styles={[Styles.button]}
+            textStyles={[
               TextStyles.semiBold,
-              TextStyles.textSize1,
-              TextStyles.descriptionText,
-            ]}>
-            Already have account?
-          </Text>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('SignIn');
+              TextStyles.heading3,
+              TextStyles.nunito,
+            ]}
+            onPress={handleSignUp}
+          />
+          <View
+            style={{
+              // flex: 1,
+              flexDirection: 'row',
+              alignSelf: 'center',
+              // marginTop: 20,
+              // backgroundColor: "red"
             }}>
             <Text
               style={[
                 TextStyles.nunito,
+                TextStyles.semiBold,
                 TextStyles.textSize1,
-                TextStyles.bold,
+                TextStyles.descriptionText,
               ]}>
-              SIGN IN
+              Already have account?
             </Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('SignIn');
+              }}>
+              <Text
+                style={[
+                  TextStyles.nunito,
+                  TextStyles.textSize1,
+                  TextStyles.bold,
+                ]}>
+                SIGN IN
+              </Text>
+            </TouchableOpacity>
+
+          </View>
+
         </View>
       </View>
     </View>
@@ -177,17 +168,19 @@ export default SignUp;
 const Styles = StyleSheet.create({
   mainView: {
     flex: 1,
+    justifyContent: 'center'
   },
   welcomeText: {
     padding: 20,
-    marginTop: 70,
+    marginTop: 50,
   },
   inputView: {
     elevation: 10,
     padding: 30,
     marginRight: 20,
-    height: '75%',
+    height: '70%',
     backgroundColor: 'white',
+    gap: 40
   },
   textInput: {
     height: 40,
@@ -198,7 +191,7 @@ const Styles = StyleSheet.create({
     backgroundColor: 'white',
     marginTop: 5,
     marginBottom: 20,
-    flex:1
+    flex: 1
   },
   button: {
     marginTop: '5%',
@@ -219,4 +212,9 @@ const Styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  buttonsView: {
+    gap: 15,
+    marginBottom: 20,
+    // backgroundColor: 'red'
+  }
 });

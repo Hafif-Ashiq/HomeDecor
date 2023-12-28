@@ -4,6 +4,7 @@ import CreditCard from '../components/Global/CreditCard'
 import { PrimaryButton } from '../components/buttons'
 import TextStyles from '../styles/TextStyles'
 import InputField from '../components/Global/InputField'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const Payment = () => {
 
@@ -14,9 +15,6 @@ const Payment = () => {
     const [expiry, setExpiry] = useState("")
     const [cvv, setCvv] = useState("")
 
-    const handleNumberChange = (text) => {
-
-    }
 
     useEffect(() => {
         setOriginalNumber(cardNumber)
@@ -33,90 +31,87 @@ const Payment = () => {
     }, [expiry])
 
     return (
-        // <KeyboardAvoidingView style={styles.mainView}>
-        //     <ScrollView style={{
-        //         width: '100%',
 
-        //         flex: 1,
-        //         flexGrow: 1,
-        //         backgroundColor: "gray"
-        //     }}>
-        <View
-            style={styles.mainView}
-        // style={{
-        // height: '100%',
-        // backgroundColor: 'red',
-        // flex: 1,
-        // flexGrow: 1,
-        // minHeight: '100%',
-        // }}
+        <KeyboardAwareScrollView
+            enableAutomaticScroll
+            keyboardShouldPersistTaps="handled"
+            enableOnAndroid={true}
+            style={{ flex: 1 }}
         >
-            {/* <KeyboardAvoidingView  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-                <ScrollView contentContainerStyle={{ flexGrow: 1 }}> */}
-            <CreditCard
-                text={cardNumber}
-                name={cardName}
-                expiry={expiry}
-            />
-            <View style={styles.buttonView} >
-                <InputField
-                    label={"Card Holder Name"}
-                    isNumber
-                    value={cardName}
-                    onChange={setName}
-                    placeholder='Ex. My Name'
-                />
-                <InputField
-                    label={"Card Number"}
-                    isNumber
-                    placeholder='XXXX XXXX XXXX'
-                    value={cardNumber}
-                    onChange={setCardNumber}
-                    maxLength={19}
-                />
-                <View style={styles.smallInput}>
-                    <View style={styles.smallField}>
-                        <InputField
-                            label={"CVV"}
-                            isNumber
-                            value={cvv}
-                            onChange={setCvv}
-                            maxLength={3}
-                            placeholder='Ex. 123'
-                        />
-                    </View>
-                    <View style={styles.smallField}>
-                        <InputField
-                            label={"Expiry"}
-                            isNumber
-                            value={expiry}
-                            onChange={setExpiry}
-                            maxLength={5}
-                            placeholder='Ex. XX/XX'
-                        />
-                    </View>
-                </View>
+            <View
+                style={styles.mainView}
 
-                {/* <View style={styles.spacer}></View> */}
-                {/* </ScrollView>
+            >
+
+
+                <CreditCard
+                    text={cardNumber}
+                    name={cardName}
+                    expiry={expiry}
+
+                />
+                <View style={styles.buttonView} >
+                    <InputField
+                        label={"Card Holder Name"}
+                        isNumber
+                        value={cardName}
+                        onChange={setName}
+                        placeholder='Ex. My Name'
+                    />
+                    <InputField
+                        label={"Card Number"}
+                        isNumber
+                        placeholder='XXXX XXXX XXXX'
+                        value={cardNumber}
+                        onChange={setCardNumber}
+                        maxLength={19}
+
+                    />
+                    <View style={styles.smallInput}>
+                        <View style={styles.smallField}>
+                            <InputField
+                                label={"CVV"}
+                                isNumber
+                                value={cvv}
+                                onChange={setCvv}
+                                maxLength={3}
+                                placeholder='Ex. 123'
+
+                            />
+                        </View>
+                        <View style={styles.smallField}>
+                            <InputField
+                                label={"Expiry"}
+                                isNumber
+                                value={expiry}
+                                onChange={setExpiry}
+                                maxLength={5}
+                                placeholder='Ex. XX/XX'
+
+                            />
+                        </View>
+                    </View>
+
+                    {/* <View style={styles.spacer}></View> */}
+                    {/* </ScrollView>
 
             </KeyboardAvoidingView> */}
-                <PrimaryButton
-                    title={"Move to Checkout"}
-                    styles={[
-                        styles.button
-                    ]}
-                    textStyles={[
-                        TextStyles.semiBold,
-                        TextStyles.profileHeading,
-                        TextStyles.nunito
-                    ]}
+                    <PrimaryButton
+                        title={"Move to Checkout"}
+                        styles={[
+                            styles.button
+                        ]}
+                        textStyles={[
+                            TextStyles.semiBold,
+                            TextStyles.profileHeading,
+                            TextStyles.nunito
+                        ]}
 
-                />
+                    />
+                </View>
             </View>
-        </View>
-        //     </ScrollView>
-        // </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
+
     )
 }
 

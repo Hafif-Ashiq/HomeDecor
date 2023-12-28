@@ -21,7 +21,9 @@ import SuccessPageIcon from "./SuccessPageIcon";
 import Dhl from "./dhl";
 import New from "./New";
 
+
 export {
+    SplashScreen,
     SuccessPageIcon,
     MasterCard,
     Visa,
