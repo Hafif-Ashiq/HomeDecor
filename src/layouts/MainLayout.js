@@ -34,7 +34,7 @@ const MainLayout = () => {
       // initialRouteName='Payment'
       >
         <Stack.Screen name='Splash' component={SplashScreen} options={options} />
-        <Stack.Navigator initialRouteName="StartPage"></Stack.Navigator>
+        
         <Stack.Screen name='StartPage' component={GettingStarted} options={{ headerShown: false }} />
         {/* Auth Pages */}
         <Stack.Screen
