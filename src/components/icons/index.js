@@ -23,7 +23,7 @@ import New from "./New";
 
 
 export {
-    SplashScreen,
+    
     SuccessPageIcon,
     MasterCard,
     Visa,
