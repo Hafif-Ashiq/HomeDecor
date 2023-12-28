@@ -15,112 +15,49 @@ import TextStyles from '../styles/TextStyles';
 import {Button} from 'react-native-paper';
 import {PrimaryButton} from '../components/buttons';
 import {wrap} from 'module';
+import {useRoute} from '@react-navigation/native';
+import {firebase} from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Notifications = ({navigation}) => {
+  const [loading, setIsLoading] = useState(false);
   const [notificationArray, setNotificationArray] = useState([]);
+  const [userId, setUserId] = useState('');
+  const [tabFocus, setTabFocus] = useState(false);
+  const [confirmed, setConifrm] = useState(
+    "https://images.unsplash.com/photo-1603899122361-e99b4f6fecf5?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  const [cancelled, setCancel] = useState(
+    'https://images.unsplash.com/photo-1593510987046-1f8fcfc512a0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  );
+  const [shipped, setShipped] = useState(
+    'https://images.unsplash.com/photo-1656140129492-e834cce8309c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  );
 
-  const notifications = [
-    {
-      id: '1',
-      title: 'Black Simple Chair 1',
-      type: 'shipped',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Turpis pretium et in arcu adipiscing nec. Turpis pretium et in arcu adipiscing nec. ',
-      image:
-        'https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      new: false,
-      orderNumber: ' 123456789',
-    },
-    {
-      id: '2',
-      title: 'Black Simple Chair 1',
-      type: 'shipped',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Turpis pretium et in arcu adipiscing nec. Turpis pretium et in arcu adipiscing nec. ',
-      image:
-        'https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      new: false,
-      orderNumber: ' 123456789',
-    },
-    {
-      id: '3',
-      title: 'Black Simple Chair 1',
-      type: 'confirmed',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Turpis pretium et in arcu adipiscing nec. Turpis pretium et in arcu adipiscing nec. ',
-      image:
-        'https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      new: false,
-      orderNumber: ' 123456789',
-    },
-    {
-      id: '4',
-      title: 'Black Simple Chair 1',
-      type: 'cancelled',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Turpis pretium et in arcu adipiscing nec. Turpis pretium et in arcu adipiscing nec. ',
-      image:
-        'https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      new: false,
-      orderNumber: ' 123456789',
-    },
-    {
-      id: '5',
-      title: 'Black Simple Chair 1',
-      type: 'shipped',
-      description:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Turpis pretium et in arcu adipiscing nec. Turpis pretium et in arcu adipiscing nec. ',
-      image:
-        'https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      new: true,
-      orderNumber: ' 123456789',
-    },
-    {
-      id: '6',
-      title: 'Black Simple Chair 1',
-      type: 'shipped',
-      description:
-        'Lorem ipsum dolor sit amet, consecteturin arcu adipiscing nec. Turpis pretium et in arcu adipiscing nec. ',
-      image:
-        'https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-      new: true,
-      orderNumber: ' 123456789',
-    },
-    {
-        id: '7',
-        title: 'Black Simple Chair 1',
-        type: 'shipped',
-        description:
-          'Lorem ipsum dolor sit amet, consecteturin arcu adipiscing nec. Turpis pretium et in arcu adipiscing nec. ',
-        image:
-          'https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        new: true,
-        orderNumber: ' 123456789',
-      },
-      {
-        id: '8',
-        title: 'Black Simple Chair 1',
-        type: 'shipped',
-        description:
-          'Lorem ipsum dolor sit amet, consecteturin arcu adipiscing nec. Turpis pretium et in arcu adipiscing nec. ',
-        image:
-          'https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        new: true,
-        orderNumber: ' 123456789',
-      },
-      {
-        id: '9',
-        title: 'Black Simple Chair 1',
-        type: 'shipped',
-        description:
-          'Lorem ipsum dolor sit amet, consecteturin arcu adipiscing nec. Turpis pretium et in arcu adipiscing nec. ',
-        image:
-          'https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=1965&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        new: true,
-        orderNumber: ' 123456789',
-      },
-  ];
-  const sortedNotifications = [...notifications].sort((a, b) => {
+  useEffect(() => {
+    const getNotifications = async () => {
+      const user_id = await AsyncStorage.getItem('user_id');
+      setUserId(user_id);
+      // getNotifications
+      const notificationsArr = [];
+      firebase
+        .firestore()
+        .collection('users')
+        .doc(user_id)
+        .collection('notifications')
+        .get()
+        .then(res => {
+          res.forEach(doc => {
+            notificationsArr.push({id: doc.id, ...doc.data()});
+          });
+          setNotificationArray(notificationsArr);
+        
+        });
+    };
+    getNotifications();
+    setIsLoading(true);
+  }, [tabFocus, notificationArray]);
+
+  const sortedNotifications = [...notificationArray].sort((a, b) => {
     // Order 'new' notifications first
     if (a.new && !b.new) {
       return -1;
@@ -132,6 +69,21 @@ const Notifications = ({navigation}) => {
     }
   });
 
+  const getImage = (item) => {
+    const type = item.type;
+  
+    if (type && typeof type === 'object') {
+      if (type.shipped) {
+        return shipped;
+      } else if (type.cancelled) {
+        return cancelled;
+      }
+    }
+    // Default to confirmed
+    return confirmed;
+  };
+  
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -139,23 +91,36 @@ const Notifications = ({navigation}) => {
         renderItem={({item}) => {
           return (
             <View style={styles.productItem}>
-              <Image source={{uri: item.image}} style={styles.productImage} />
+              <Image source={{uri: getImage(item)}} style={styles.productImage} />
               <View style={styles.prodDescript}>
                 <Text
                   style={[
                     TextStyles.primaryText,
                     TextStyles.nunito,
                     TextStyles.bold,
-                    TextStyles.textSize1,{marginBottom:7}
+                    TextStyles.textSize1,
+                    {marginBottom: 7},
                   ]}>
-                  Your order #{item.orderNumber} has been {item.type}
+                  Your order #{item.order_no} has been  {item.type && typeof item.type === 'object' ? (
+                  item.type.shipped ? (
+                    'shipped'
+                  ) : item.type.cancelled ? (
+                    'cancelled'
+                  ) : item.type.confirmed ? (
+                    'confirmed'
+                  ) : (
+                    'processed'
+                  )
+                ) : (
+                  'processed'
+                )}
                 </Text>
                 <Text
                   style={[
                     TextStyles.nunito,
                     TextStyles.medium,
-                    {fontSize: 10, lineHeight: 14}, 
-                    {marginBottom:7}
+                    {fontSize: 10, lineHeight: 14},
+                    {marginBottom: 7},
                   ]}
                   numberOfLines={3} // Set the desired number of lines
                   ellipsizeMode="tail" // Display an ellipsis (...) at the end if the text is truncated
@@ -187,11 +152,11 @@ const styles = StyleSheet.create({
     resizeMode: 'cover', // You can adjust the resizeMode based on your design
     borderRadius: 10,
     marginRight: '4%',
-    marginLeft:6
+    marginLeft: 6,
   },
   prodDescript: {
-    marginRight:86,
-    justifyContent:'flex-start'
+    marginRight: 86,
+    justifyContent: 'flex-start',
   },
   iconContainer: {
     justifyContent: 'space-between',
