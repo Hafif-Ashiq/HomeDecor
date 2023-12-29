@@ -4,8 +4,6 @@ import OrderTile from '../components/Profile/OrderTile'
 
 const MyOrders = ({ orders = [] }) => {
 
-
-    // const getDate = () => "23/10"
     return (
         <View style={styles.mainView}>
             <ScrollView style={styles.scrollView} >

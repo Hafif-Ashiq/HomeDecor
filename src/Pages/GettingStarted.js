@@ -61,7 +61,8 @@ export default GettingStarted
 
 const Styles = StyleSheet.create({
     flex1: {
-        flex: 1
+        flex: 1,
+        // height: "120%"
     },
     mainView: {
         flex: 1,
@@ -71,7 +72,8 @@ const Styles = StyleSheet.create({
         width: '100%',
         padding: 30,
         gap: 40,
-        top: "10%"
+        top: "10%",
+
     },
     description: {
         textAlign: 'justify',

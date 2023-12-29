@@ -154,7 +154,7 @@ const OrdersLayout = () => {
         <>
             {loading ? <Text>loading</Text> : <OrdersTab.Navigator
 
-                // initialRouteName='Delivered'
+                initialRouteName='Processing'
                 screenOptions={{
                     // tabBarPressOpacity: 0,
                     tabBarPressColor: "transparent",

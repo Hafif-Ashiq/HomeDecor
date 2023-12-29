@@ -34,11 +34,13 @@ const CheckOut = ({ navigation }) => {
       const paymentInfo = JSON.parse(await AsyncStorage.getItem("payment_info"))
       const total = JSON.parse(await AsyncStorage.getItem("order_price"))
 
+      // console.log(shippingInfo);
       setName(shippingInfo.name)
       setAdress(shippingInfo.address)
       setPayment(paymentInfo.cardNumber)
       setPrice(total)
 
+      // console.log(address);
     }
     getInfo()
   }, [])
@@ -167,9 +169,11 @@ const CheckOut = ({ navigation }) => {
                 height: 70,
                 elevation: 2,
                 padding: 15,
+
               },
               TextStyles.nunito,
               TextStyles.textSize1,
+              TextStyles.primaryText,
             ]}>
             {address}
           </Text>

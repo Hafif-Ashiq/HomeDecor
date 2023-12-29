@@ -49,7 +49,7 @@ const MyCart = ({ navigation }) => {
         console.log(res);
         documents.push({ id: doc.id, ...doc.data() });
       })
-      console.log(documents);
+      // console.log(documents);
 
       documents = documents.filter((doc) => doc.id != "empty")
       const prods = []

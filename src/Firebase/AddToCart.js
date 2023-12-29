@@ -17,7 +17,7 @@ const addToCart = async (id, quantity, userId) => {
             console.log("Quantity updated successfully.");
         }
         else {
-            cartDocRef.set({
+            await cartDocRef.set({
                 quantity: quantity
             })
             console.log("New item added to cart.");

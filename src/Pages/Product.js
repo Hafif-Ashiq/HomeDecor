@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Text, View, Image, StyleSheet, Alert, ScrollView, TouchableOpacity } from 'react-native'
+import { Text, View, Image, StyleSheet, Alert, ScrollView, TouchableOpacity, ToastAndroid } from 'react-native'
 import { PrimaryButton, SaveButton } from '../components/buttons'
 import Counter from '../counter/Counter'
 import TextStyles from '../styles/TextStyles'
@@ -64,14 +64,18 @@ const Product = ({ navigation }) => {
     }).then(result => {
       console.log(result);
       console.log("Product Added to Favorites");
+      ToastAndroid.show("Added to Favorites", ToastAndroid.LONG)
     }).catch(e => console.log(e))
   }
 
 
   const toCart = async () => {
     const user_id = await getuserID()
-    await addToCart(receivedData.id, quantity, user_id)
-    navigation.navigate("MyCart")
+    addToCart(receivedData.id, quantity, user_id).then(res => {
+      ToastAndroid.show("Added to Cart", ToastAndroid.LONG)
+      navigation.navigate("MyCart")
+    })
+
   }
 
   return (

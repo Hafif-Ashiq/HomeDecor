@@ -80,6 +80,8 @@ const Favorites = ({ navigation }) => {
 
 
   const removeFavorite = async (itemId) => {
+    const products = productsArray.filter(item => item !== itemId)
+    setProductsArray(products)
     const userId = await getuserID()
     firebase
       .firestore()
@@ -93,9 +95,7 @@ const Favorites = ({ navigation }) => {
       })
       .catch(e => console.error(e))
 
-    const products = productsArray.filter(item => item !== itemId)
 
-    setProductsArray(products)
 
   }
 

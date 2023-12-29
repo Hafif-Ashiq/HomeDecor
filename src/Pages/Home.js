@@ -158,6 +158,7 @@ const Home = ({ navigation }) => {
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     style={styles.productsView}
+
                 >
                     {productsArray.map((pair, index) =>
                         pair.length % 2 == 0 ?
@@ -237,6 +238,7 @@ const styles = StyleSheet.create({
     productsView: {
         paddingHorizontal: 20,
         // paddingTop: 10,
+        // justifyContent: 'flex-start'
 
     },
     horizontalView: {
@@ -248,7 +250,7 @@ const styles = StyleSheet.create({
         marginTop: 15
     },
     verticalSpacer: {
-        height: 100
+        height: 20
     },
     emptyTile: {
         flex: 1
