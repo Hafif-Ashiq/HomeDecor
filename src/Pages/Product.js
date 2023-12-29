@@ -70,7 +70,8 @@ const Product = ({ navigation }) => {
 
   const toCart = async () => {
     const user_id = await getuserID()
-    addToCart(receivedData.id, quantity, user_id)
+    await addToCart(receivedData.id, quantity, user_id)
+    navigation.navigate("MyCart")
   }
 
   return (

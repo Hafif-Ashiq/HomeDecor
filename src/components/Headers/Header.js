@@ -10,11 +10,16 @@ const Header = ({ navigation, title }) => {
 
 
     const handleLogout = async () => {
-        await AsyncStorage.removeItem("user_id").then((res) => {
-            console.log(res);
-            console.log("Logged Out");
-            navigation.navigate("SignIn")
-        })
+        try {
+            await AsyncStorage.removeItem("user_id").then((res) => {
+                console.log(res);
+                console.log("Logged Out");
+                navigation.navigate("SignIn")
+            })
+        }
+        catch (e) {
+            console.error(e);
+        }
     }
 
     return (

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import TextStyles from '../styles/TextStyles'
 import PageCard from '../components/Profile/PageCard'
 import MyColors from '../styles/MyColors'
@@ -7,13 +7,15 @@ import { firebase } from '@react-native-firebase/firestore'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import auth from "@react-native-firebase/auth"
 import { useFocusEffect } from '@react-navigation/native'
+import { launchImageLibrary } from 'react-native-image-picker';
+import storage from '@react-native-firebase/storage';
 
 const Profile = ({ navigation }) => {
 
     const [orders, setOrders] = useState(0)
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
-    const [userId, setuserId] = useState("")
+    const [imageUri, setImageUri] = useState("")
 
     const [tabFocus, setTabFocus] = useState(true)
 
@@ -23,28 +25,48 @@ const Profile = ({ navigation }) => {
         }, [])
     );
 
+    const getuserID = async () => {
+        const user_id = await AsyncStorage.getItem("user_id")
+
+        return user_id
+    }
+
     useEffect(() => {
         console.log("In profile");
-        const getuserID = async () => {
-            const user_id = await AsyncStorage.getItem("user_id")
-            setuserId(user_id)
-            console.log("User ID Set == " + userId);
-        }
+
         const getUserCreds = async () => {
-            getuserID()
+            userId = await getuserID()
 
             setEmail(auth().currentUser.email)
             firebase.firestore().collection('users').doc(userId).get()
                 .then(response => {
                     const data = response["_data"]
                     setName(data["name"])
-                    setOrders(data["orders"].length)
                 }).catch(e => console.error(e))
 
         }
         getUserCreds()
+        getOrders()
 
-    }, [tabFocus])
+    }, [])
+
+    const getOrders = async () => {
+        const userId = await getuserID()
+        firebase
+            .firestore()
+            .collection("users")
+            .doc(userId)
+            .collection("orders")
+            .get()
+            .then(res => {
+                let array = []
+                res.forEach((item) => array.push(item.id))
+                const newArray = array.filter(item => item.id != "empty")
+                console.log(newArray);
+                setOrders(array.length)
+            })
+
+    }
 
     const goToSettings = () => {
 
@@ -56,10 +78,44 @@ const Profile = ({ navigation }) => {
         navigation.navigate("Settings", { info: dataToSend })
     }
 
+    const uploadPic = () => {
+        console.log("Image upload");
+        launchImageLibrary({
+            // mediaTypes: MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1
+        }, response => {
+            if (!response.didCancel) {
+                setImageUri(response.uri);
+                uploadImage(response.uri); // Call the function to upload image to 
+            }
+        });
+    }
+
+    const uploadImage = async (uri) => {
+        const userId = await getuserID()
+        const storageRef = storage().ref();
+        const imageName = `myImage.jpg`; // Define a unique name for your image
+        const imageRef = storageRef.child(`images/${imageName}`);
+
+        try {
+            const response = await fetch(uri);
+            const blob = await response.blob();
+
+            await imageRef.put(blob);
+            console.log('Image uploaded successfully');
+        } catch (error) {
+            console.error('Error uploading image:', error);
+        }
+    };
+
     return (
         <View style={styles.mainView}>
             <View style={styles.infoView}>
-                <Image style={styles.image} source={require("../assets/person.jpg")} />
+                <TouchableOpacity disabled onPress={uploadPic}>
+                    <Image style={styles.image} source={require("../assets/person.jpg")} />
+                </TouchableOpacity>
                 <View style={styles.textView}>
                     <Text
                         style={[

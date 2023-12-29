@@ -19,9 +19,14 @@ import {
 import HomeLayout from './HomeLayout';
 import { CartHeader, Header } from '../components/Headers';
 import SplashScreen from '../Pages/SplashScreen'
+import { StatusBar } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 const MainLayout = () => {
+  StatusBar.setBackgroundColor("white")
+  // StatusBar.setBarStyle("black")
+  // StatusBar.setTranslucent(true)
+
 
   const options = {
     headerShown: false

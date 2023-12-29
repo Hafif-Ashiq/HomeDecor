@@ -40,8 +40,9 @@ const Home = ({ navigation }) => {
                 // console.log(array[0])
                 setOriginalArray(array)
                 filterArray()
+                setIsLoaded(true)
             })
-        setIsLoaded(true)
+
     }, [])
 
 
@@ -182,14 +183,14 @@ const Home = ({ navigation }) => {
                                 <View style={styles.horizontalView} key={index}>
                                     <TouchableOpacity
                                         style={{ flex: 1 }}
-                                        onPress={() => goToProduct(item)}
+                                        onPress={() => goToProduct(pair[0])}
                                         key={pair.length - 1}
                                     >
                                         <ProductTile
                                             title={pair[0].name}
                                             price={pair[0].price}
                                             image={pair[0].images[0]}
-                                            onAddToCart={() => toCart(item.id)}
+                                            onAddToCart={() => toCart(pair[0].id)}
                                         />
                                     </TouchableOpacity>
                                     <View style={styles.emptyTile}></View>
@@ -210,11 +211,15 @@ export default Home
 
 
 const styles = StyleSheet.create({
+    mainView: {
+        flex: 1
+    },
     categoriesView: {
         paddingHorizontal: 20,
         flexDirection: 'row',
         marginBottom: 10,
-        elevation: 5
+        elevation: 5,
+
     },
     category: {
         marginHorizontal: 12.5,

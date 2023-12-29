@@ -24,21 +24,50 @@ const SignUp = ({ navigation }) => {
   const [secured, setSecured] = useState(true);
   const [confirmSecured, setConfirmSecured] = useState(true)
 
+  const [nameError, setNameError] = useState(false)
+  const [emailError, setEmailError] = useState(false)
+  const [passError, setPassError] = useState(false)
+  const [confirmPassError, setConfirmPassError] = useState(false)
+
+
 
 
   const handleSignUp = async () => {
-    console.log("signup");
+
+    if (name == "") {
+      setNameError(true)
+      return
+    }
+    if (password.length < 8 || password == "") {
+      setPassError(true)
+      return
+    }
+    if (password != confirmPass || confirmPass == "") {
+      setPassError(true)
+      setConfirmPassError(true)
+      return
+    }
+
+    if (email == "") {
+      setEmailError(true)
+      return
+    }
+
+    setNameError(true)
+    setConfirmPassError(true)
+    setPassError(true)
+    setEmailError(true)
+
     auth()
       .createUserWithEmailAndPassword(email, password)
-      .then((userCredentials) => {
+      .then(async (userCredentials) => {
 
         const newUser = userCredentials.user
 
         const user = {
           name: name,
           profile_pic: null,
-          // cart: [],
-          // orders: [],
+
           favorites: [],
           // notifications: []
         }
@@ -49,35 +78,40 @@ const SignUp = ({ navigation }) => {
 
         }).catch(e => console.error("User Creation Error"))
 
-        userDoc.collection('orders').doc("empty").set({}).then(res => {
-          console.log("Orders Collection created Successfully")
-        }).catch(e => console.error("Orders Creation Error"))
+        // userDoc.collection('orders').doc("empty").set({}).then(res => {
+        //   console.log("Orders Collection created Successfully")
+        // }).catch(e => console.error("Orders Creation Error"))
 
-        userDoc.collection('cart').doc("empty").set({}).then(res => {
-          console.log("Cart Collection created Successfully")
-        }).catch(e => console.error("Cart Creation Error"))
+        // userDoc.collection('cart').doc("empty").set({}).then(res => {
+        //   console.log("Cart Collection created Successfully")
+        // }).catch(e => console.error("Cart Creation Error"))
 
-        userDoc.collection('notifications').doc("empty").set({}).then(res => {
-          console.log("Notifications Collection created Successfully")
-        }).catch(e => console.error("Notifications Creation Error"))
+        // userDoc.collection('notifications').doc("empty").set({}).then(res => {
+        //   console.log("Notifications Collection created Successfully")
+        // }).catch(e => console.error("Notifications Creation Error"))
 
         try {
-          AsyncStorage.setItem("user_id", newUser.uid)
+          await AsyncStorage.setItem("user_id", newUser.uid)
             .then(response => console.log("User ID saved"))
         }
         catch (e) {
           console.log(e)
         }
-
+        setName("")
+        setConfirm("")
+        setEmail("")
+        setPassword("")
         console.log('User account created');
         navigation.navigate('HomeLayout')
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
           Alert.alert('That email address is already in use!');
+          setEmailError(true)
         }
 
         if (error.code === 'auth/invalid-email') {
+          setEmailError(true)
           Alert.alert('That email address is invalid!');
         }
 
@@ -102,12 +136,15 @@ const SignUp = ({ navigation }) => {
             label={"Name"}
             value={name}
             onChange={setName}
+            error={nameError}
           />
 
           <AuthInput
             label={"Email"}
             value={email}
             onChange={setEmail}
+            error={emailError}
+
           />
           <AuthInput
             label={"Password"}
@@ -116,6 +153,7 @@ const SignUp = ({ navigation }) => {
             isPassword={true}
             secured={secured}
             toggleShowPassword={() => setSecured(!secured)}
+            error={passError}
           />
           <AuthInput
             label={"Confirm Password"}
@@ -124,6 +162,7 @@ const SignUp = ({ navigation }) => {
             isPassword={true}
             secured={confirmSecured}
             toggleShowPassword={() => setConfirmSecured(!confirmSecured)}
+            error={confirmPassError}
           />
         </View>
 

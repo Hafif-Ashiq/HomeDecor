@@ -58,12 +58,12 @@ const Settings = () => {
     const getuserID = async () => {
         const user_id = await AsyncStorage.getItem("user_id")
         // setuserId(user_id)
-        console.log("User ID Set == " + user_id);
+        // console.log("User ID Set == " + user_id);
 
         return user_id
     }
 
-    uploadAllNotifications = async () => {
+    const uploadAllNotifications = async () => {
 
         const user_id = await getuserID()
 
@@ -83,6 +83,18 @@ const Settings = () => {
         })
     }
 
+    const updateName = async () => {
+        const userId = await getuserID()
+
+        firebase.firestore().collection("users").doc(userId).update({
+            name: name
+        }).then(res => {
+            console.log("Name Updated");
+        })
+
+        setPersonalEdit(false)
+    }
+
     return (
         <View style={styles.mainView}>
             <ScrollView style={styles.scrollView}>
@@ -98,26 +110,26 @@ const Settings = () => {
                         edit={personalEdit}
                         onChange={setName}
                     />
-                    <Inputs
-                        label={"Email"}
-                        value={email}
-                        edit={personalEdit}
-                        onChange={setEmail}
-                    />
                     {personalEdit ? <PrimaryButton
                         title={"Save"}
                         styles={[styles.saveButton]}
                         textStyles={[
                             TextStyles.headerHeading
                         ]}
-                        onPress={() => setPersonalEdit(false)}
+                        onPress={updateName}
                     /> : <></>}
+                    <Inputs
+                        label={"Email"}
+                        value={email}
+                        edit={false}
+                        onChange={setEmail}
+                    />
+
                 </View>
                 <View style={styles.subViews}>
                     <Heading
                         title={"Password"}
-                        editable
-                        onEdit={() => (setPasswordEdit(true))}
+
                     />
                     <Inputs
                         label={passwordEdit ? "Old Password" : "Password"}

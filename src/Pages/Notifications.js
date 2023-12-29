@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Text,
   ScrollView,
@@ -9,18 +9,19 @@ import {
   Image,
 } from 'react-native';
 
-import {ProductTile, Category} from '../components/Home';
-import {CrossIcon, New, ShoppingBag} from '../components/icons';
+import { ProductTile, Category } from '../components/Home';
+import { CrossIcon, New, ShoppingBag } from '../components/icons';
 import TextStyles from '../styles/TextStyles';
-import {Button} from 'react-native-paper';
-import {PrimaryButton} from '../components/buttons';
-import {wrap} from 'module';
-import {useRoute} from '@react-navigation/native';
-import {firebase} from '@react-native-firebase/firestore';
+import { Button } from 'react-native-paper';
+import { PrimaryButton } from '../components/buttons';
+import { wrap } from 'module';
+import { useRoute } from '@react-navigation/native';
+import { firebase } from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loader from '../components/Global/Loader';
 
-const Notifications = ({navigation}) => {
-  const [loading, setIsLoading] = useState(false);
+const Notifications = ({ navigation }) => {
+  const [loading, setIsLoading] = useState(true);
   const [notificationArray, setNotificationArray] = useState([]);
   const [userId, setUserId] = useState('');
   const [tabFocus, setTabFocus] = useState(false);
@@ -34,11 +35,12 @@ const Notifications = ({navigation}) => {
   );
 
   useEffect(() => {
+    setIsLoading(true)
     const getNotifications = async () => {
       const user_id = await AsyncStorage.getItem('user_id');
       setUserId(user_id);
       // getNotifications
-      const notificationsArr = [];
+      let notificationsArr = [];
       firebase
         .firestore()
         .collection('users')
@@ -47,14 +49,17 @@ const Notifications = ({navigation}) => {
         .get()
         .then(res => {
           res.forEach(doc => {
-            notificationsArr.push({id: doc.id, ...doc.data()});
+            notificationsArr.push({ id: doc.id, ...doc.data() });
           });
+          notificationsArr = notificationsArr.filter(item => item.id != "empty")
           setNotificationArray(notificationsArr);
-        
+          setIsLoading(false)
+
+
         });
     };
     getNotifications();
-    setIsLoading(true);
+    setIsLoading(false);
   }, [tabFocus, notificationArray]);
 
   const sortedNotifications = [...notificationArray].sort((a, b) => {
@@ -71,7 +76,7 @@ const Notifications = ({navigation}) => {
 
   const getImage = (item) => {
     const type = item.type;
-  
+
     if (type && typeof type === 'object') {
       if (type.shipped) {
         return shipped;
@@ -82,57 +87,60 @@ const Notifications = ({navigation}) => {
     // Default to confirmed
     return confirmed;
   };
-  
+
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={sortedNotifications}
-        renderItem={({item}) => {
-          return (
-            <View style={styles.productItem}>
-              <Image source={{uri: getImage(item)}} style={styles.productImage} />
-              <View style={styles.prodDescript}>
-                <Text
-                  style={[
-                    TextStyles.primaryText,
-                    TextStyles.nunito,
-                    TextStyles.bold,
-                    TextStyles.textSize1,
-                    {marginBottom: 7},
-                  ]}>
-                  Your order #{item.order_no} has been  {item.type && typeof item.type === 'object' ? (
-                  item.type.shipped ? (
-                    'shipped'
-                  ) : item.type.cancelled ? (
-                    'cancelled'
-                  ) : item.type.confirmed ? (
-                    'confirmed'
-                  ) : (
-                    'processed'
-                  )
-                ) : (
-                  'processed'
-                )}
-                </Text>
-                <Text
-                  style={[
-                    TextStyles.nunito,
-                    TextStyles.medium,
-                    {fontSize: 10, lineHeight: 14},
-                    {marginBottom: 7},
-                  ]}
-                  numberOfLines={3} // Set the desired number of lines
-                  ellipsizeMode="tail" // Display an ellipsis (...) at the end if the text is truncated
-                >
-                  {item.description}
-                </Text>
-              </View>
-            </View>
-          );
-        }}
-        keyExtractor={item => item.id} // Assuming title can be used as a unique key
-      />
+      {
+        loading ? <Loader /> :
+          <FlatList
+            data={sortedNotifications}
+            renderItem={({ item }) => {
+              return (
+                <View style={styles.productItem}>
+                  <Image source={{ uri: getImage(item) }} style={styles.productImage} />
+                  <View style={styles.prodDescript}>
+                    <Text
+                      style={[
+                        TextStyles.primaryText,
+                        TextStyles.nunito,
+                        TextStyles.bold,
+                        TextStyles.textSize1,
+                        { marginBottom: 7 },
+                      ]}>
+                      Your order #{item.id} has been  {item.type && typeof item.type === 'object' ? (
+                        item.type.shipped ? (
+                          'shipped'
+                        ) : item.type.cancelled ? (
+                          'cancelled'
+                        ) : item.type.confirmed ? (
+                          'confirmed'
+                        ) : (
+                          'processed'
+                        )
+                      ) : (
+                        'processed'
+                      )}
+                    </Text>
+                    <Text
+                      style={[
+                        TextStyles.nunito,
+                        TextStyles.medium,
+                        { fontSize: 10, lineHeight: 14 },
+                        { marginBottom: 7 },
+                      ]}
+                      numberOfLines={3} // Set the desired number of lines
+                      ellipsizeMode="tail" // Display an ellipsis (...) at the end if the text is truncated
+                    >
+                      {item.description}
+                    </Text>
+                  </View>
+                </View>
+              );
+            }}
+            keyExtractor={item => item.id} // Assuming title can be used as a unique key
+          />
+      }
     </View>
   );
 };

@@ -38,7 +38,7 @@ const Success = ({ navigation }) => {
           TextStyles.heading3,
           TextStyles.nunito,
         ]}
-      // onPress={() => { navigation.navigate('Orders') }}
+        onPress={() => { navigation.navigate('Orders') }}
       />
 
       <PrimaryButton

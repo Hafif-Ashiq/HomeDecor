@@ -53,35 +53,76 @@ const CheckOut = ({ navigation }) => {
 
 
   const submitOrder = async () => {
-    const db = firebase.firestore().collection("users").doc(userId)
-    const userId = await getuserID()
-    const documents = []
+    const user_id = await getuserID()
+    const db = firebase.firestore().collection("users").doc(user_id)
+    let documents = []
     db.collection("cart").get()
       .then(res => {
+        // console.log(res);
         res.forEach((doc) => {
+          console.log(doc);
           documents.push({ id: doc.id, ...doc.data() });
+
         })
         console.log(documents);
+        documents = documents.filter(doc => doc.id != "empty")
+        let quantity = 0
+        documents.forEach(doc => {
+          quantity += doc.quantity
+        })
+
+        // Delete cart Items
+
+        const promises = documents.map(async (item) => {
+          const data = await db.collection("cart").doc(item.id).delete()
+          return data
+        })
+
+
+
+        Promise
+          .all(promises)
+          .then(response => {
+            console.log(quantity)
+            navigation.navigate("Success")
+          }).catch(e => console.error(e))
+
+        const currentDate = new Date()
+
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth() + 1;
+        const day = currentDate.getDate();
+
+        const date = `${day}/${month}/${year}`
+        const orderData = {
+          date: date,
+          total: price,
+          quantity: quantity,
+          status: {
+            is_cancelled: false,
+            is_completed: false,
+            is_processed: true
+          }
+        }
+
+        db.collection("orders").add(orderData).then(response => {
+          console.log("Order Saved" + response);
+          db.collection("notifications").add({
+            description: `Your Order with ${quantity} items is confirmed. Thankyou for the purchase`,
+            orderNo: response.id,
+            type: {
+              cancelled: false,
+              confirmed: true,
+              shipped: false
+            }
+          })
+        }).catch(e => console.error("Error: " + e))
+
+
+
       })
 
     // Get total Quantity
-    const quantity = 0
-    documents.forEach(doc => {
-      quantity += doc.quantity
-    })
-
-    // Delete cart Items
-
-    const promises = documents.map(async (item) => {
-      await db.collection("cart").doc(item.id).delete()
-    })
-
-    Promise
-      .all(promises)
-      .then(response => {
-        console.log(response)
-        navigation.navigate("Success")
-      })
 
 
 

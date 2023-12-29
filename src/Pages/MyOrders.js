@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import OrderTile from '../components/Profile/OrderTile'
 
 const MyOrders = ({ orders = [] }) => {
 
 
+    // const getDate = () => "23/10"
     return (
         <View style={styles.mainView}>
             <ScrollView style={styles.scrollView} >
@@ -13,9 +14,9 @@ const MyOrders = ({ orders = [] }) => {
                         tileStyle={[styles.tileStyle]}
                         key={index}
                         order_no={order.id}
-                        date={order.date}
+                        date={order.date.toString()}
                         quantity={order.quantity}
-                        amount={order.total_amount}
+                        amount={order.total}
                         status={order.status.is_cancelled ? "cancelled" : order.status.is_completed ? "completed" : "processing"}
                     />
 

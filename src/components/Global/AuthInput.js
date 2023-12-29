@@ -3,8 +3,9 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { TextInput } from 'react-native-paper'
 import TextStyles from '../../styles/TextStyles'
 import Eye from '../icons/Eye'
+import MyColors from '../../styles/MyColors'
 
-const AuthInput = ({ label, value, onChange, placeholder, isPassword, secured = false, toggleShowPassword }) => {
+const AuthInput = ({ label, value, onChange, placeholder, isPassword, secured = false, toggleShowPassword, error = false }) => {
     return (
         <View >
             <Text
@@ -26,17 +27,11 @@ const AuthInput = ({ label, value, onChange, placeholder, isPassword, secured = 
                     value={value}
                     onChangeText={onChange}
                     underlineColorAndroid="transparent"
+                    activeUnderlineColor={MyColors.primaryButton}
+                    textColor={MyColors.primaryButton}
                     placeholder={placeholder}
                     secureTextEntry={secured}
-                // right={isPassword ?
-                //     <TouchableOpacity
-                //         onPress={toggleShowPassword}
-                //         style={Styles.eyeIconContainer}
-                //     >
-                //         <Eye />
-                //     </TouchableOpacity> :
-                //     <Text>Heloo</Text>
-                // }
+                    error={error}
                 />
 
 

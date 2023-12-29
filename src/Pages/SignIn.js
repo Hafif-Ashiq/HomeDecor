@@ -20,15 +20,30 @@ const SignIn = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [secured, setSecured] = useState(true);
 
+  const [emailError, setEmailError] = useState(false)
+  const [passError, setPassError] = useState(false)
+
+
 
   const handleSignIn = async () => {
+    if (email === "") {
+      setEmailError(true)
+      return
+    }
+    if (password === "") {
+      setPassError(true)
+      return
+    }
     console.log("in Signin");
+    setEmailError(false)
+    setPassError(false)
     auth()
       .signInWithEmailAndPassword(email, password)
       .then(async (userCredential) => {
         const user = userCredential.user;
         console.log('User signed in:', user)
-        navigation.navigate('HomeLayout')
+
+
 
         try {
           const idRes = await AsyncStorage.setItem("user_id", user.uid)
@@ -39,11 +54,26 @@ const SignIn = ({ navigation }) => {
         catch (e) {
           console.log(e)
         }
+        setEmail("")
+        setPassword("")
+        navigation.navigate('HomeLayout')
 
       })
       .catch((error) => {
+        console.log(error.code);
+
+        if (error.code == 'auth/invalid-credential') {
+          setEmailError(true)
+          setPassError(true)
+        }
+        if (error.code === 'auth/invalid-email') {
+          setEmailError(true)
+        }
+        if (error.code === 'auth/wrong-password') {
+          setPassError(true)
+        }
         // Handle sign-in errors
-        console.error('Error signing in:', error);
+        // console.error('Error signing in:', error);
         // Display error message or handle accordingly
       });
   }
@@ -76,6 +106,7 @@ const SignIn = ({ navigation }) => {
             label={"Email"}
             value={email}
             onChange={setEmail}
+            error={emailError}
           />
           <AuthInput
             label={"Password"}
@@ -84,6 +115,7 @@ const SignIn = ({ navigation }) => {
             isPassword={true}
             secured={secured}
             toggleShowPassword={() => setSecured(!secured)}
+            error={passError}
           />
         </View>
         <View style={Styles.buttonsView}>

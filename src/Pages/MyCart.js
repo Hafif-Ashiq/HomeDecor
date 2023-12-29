@@ -25,10 +25,20 @@ const MyCart = ({ navigation }) => {
 
   const [reload, setReload] = useState(1)
 
+  const [loading, setLoading] = useState(true)
 
 
   useEffect(() => {
+    setLoading(true)
     getCartItems()
+
+
+  }, [])
+
+  useEffect(() => {
+    setLoading(true)
+    getCartItems()
+
   }, [reload])
 
   const getCartItems = async () => {
@@ -36,6 +46,7 @@ const MyCart = ({ navigation }) => {
     const user_id = await getuserID()
     firebase.firestore().collection("users").doc(user_id).collection("cart").get().then(res => {
       res.forEach((doc) => {
+        console.log(res);
         documents.push({ id: doc.id, ...doc.data() });
       })
       console.log(documents);
@@ -55,7 +66,7 @@ const MyCart = ({ navigation }) => {
         .then((results) => {
           prods.push(...results);
           setProductsArray(prods)
-
+          setLoading(false)
         })
         .catch((error) => {
           console.error('Error fetching products:', error);
@@ -134,62 +145,64 @@ const MyCart = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={productsArray}
-        renderItem={({ item }) => {
-          const quantity = quantityMap[item.id];
+      {
+        loading ? <View style={{ flex: 1 }}></View> : <FlatList
+          data={productsArray}
+          renderItem={({ item }) => {
+            const quantity = quantityMap[item.id];
 
-          return (
-            <View style={styles.productItem}>
-              <Image source={{ uri: item.images[0] }} style={styles.productImage} />
-              <View style={{ justifyContent: 'space-between', flex: 1 }}>
-                <View style={styles.prodDescript}>
-                  <Text
-                    style={[
-                      TextStyles.secondaryText,
-                      TextStyles.nunito,
-                      TextStyles.semiBold,
-                      TextStyles.textSize1,
-                    ]}>
-                    {item.name}
-                  </Text>
-                  <Text
-                    style={[
-                      TextStyles.primaryText,
-                      TextStyles.nunito,
-                      TextStyles.bold,
-                      TextStyles.headerHeading,
-                    ]}>
-                    Rs. {item.price}
-                  </Text>
+            return (
+              <View style={styles.productItem}>
+                <Image source={{ uri: item.images[0] }} style={styles.productImage} />
+                <View style={{ justifyContent: 'space-between', flex: 1 }}>
+                  <View style={styles.prodDescript}>
+                    <Text
+                      style={[
+                        TextStyles.secondaryText,
+                        TextStyles.nunito,
+                        TextStyles.semiBold,
+                        TextStyles.textSize1,
+                      ]}>
+                      {item.name}
+                    </Text>
+                    <Text
+                      style={[
+                        TextStyles.primaryText,
+                        TextStyles.nunito,
+                        TextStyles.bold,
+                        TextStyles.headerHeading,
+                      ]}>
+                      Rs. {item.price}
+                    </Text>
+                  </View>
+                  <View style={{ width: 100 }}>
+                    <Counter
+                      count={quantity}
+                      onPlus={() => updateQuantity(item.id, quantity + 1)}
+                      onMinus={() =>
+                        updateQuantity(item.id, Math.max(1, quantity - 1))
+                      }
+                      plusDisabled={false}
+                      minusDisabled={quantity > 1 ? false : true}
+                    />
+                  </View>
                 </View>
-                <View style={{ width: 100 }}>
-                  <Counter
-                    count={quantity}
-                    onPlus={() => updateQuantity(item.id, quantity + 1)}
-                    onMinus={() =>
-                      updateQuantity(item.id, Math.max(1, quantity - 1))
-                    }
-                    plusDisabled={false}
-                    minusDisabled={quantity > 1 ? false : true}
-                  />
+                <View style={styles.iconContainer}>
+                  <TouchableOpacity
+                    style={styles.crossIcon}
+                    activeOpacity={0.8}
+                    onPress={() => removeFromCart(item.id)}
+                  >
+                    <CrossIcon />
+                  </TouchableOpacity>
                 </View>
+                {/* Render other details of the product */}
               </View>
-              <View style={styles.iconContainer}>
-                <TouchableOpacity
-                  style={styles.crossIcon}
-                  activeOpacity={0.8}
-                  onPress={() => removeFromCart(item.id)}
-                >
-                  <CrossIcon />
-                </TouchableOpacity>
-              </View>
-              {/* Render other details of the product */}
-            </View>
-          );
-        }}
-        keyExtractor={item => item.id}
-      />
+            );
+          }}
+          keyExtractor={item => item.id}
+        />
+      }
       <View style={styles.buttonContainer}>
         <View style={styles.promoView}>
           <TextInput

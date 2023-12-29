@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { ImageBackground, StyleSheet, View } from 'react-native'
+import { ImageBackground, StatusBar, StyleSheet, View } from 'react-native'
 import { Text } from 'react-native-paper'
 import { start } from '../assets'
 import TextStyles from '../styles/TextStyles'
@@ -7,7 +7,7 @@ import PrimaryButton from '../components/buttons/PrimaryButton'
 
 const GettingStarted = ({ navigation }) => {
 
-
+    StatusBar.setBackgroundColor("transparent")
 
     return (
         <ImageBackground
@@ -17,6 +17,7 @@ const GettingStarted = ({ navigation }) => {
             <View
                 style={Styles.mainView}
             >
+
                 <Text
                     style={[
                         TextStyles.bold,

@@ -19,11 +19,11 @@ import { firebase } from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import addToCart from '../Firebase/AddToCart';
+import Loader from '../components/Global/Loader';
 
 const Favorites = ({ navigation }) => {
   const [loading, setIsLoading] = useState(false);
   const [productsArray, setProductsArray] = useState([]);
-  const [userId, setUserId] = useState("")
   const [tabFocus, setTabFocus] = useState(false)
 
   useFocusEffect(
@@ -36,11 +36,9 @@ const Favorites = ({ navigation }) => {
 
 
   useEffect(() => {
-
+    // setIsLoading(true)
     const getProducts = async () => {
       const user_id = await AsyncStorage.getItem("user_id")
-      setUserId(user_id)
-      // getFavoriteItems()
       const favProducts = []
       const db = firebase.firestore()
 
@@ -60,7 +58,14 @@ const Favorites = ({ navigation }) => {
           .then((results) => {
 
             favProducts.push(...results);
-            setProductsArray(favProducts)
+            const finalProducts = []
+            favProducts.forEach(item => {
+              if (item.quantity >= 1) {
+                finalProducts.push(item)
+              }
+            })
+            setProductsArray(finalProducts)
+            setIsLoading(false)
           })
           .catch((error) => {
             console.error('Error fetching products:', error);
@@ -69,13 +74,13 @@ const Favorites = ({ navigation }) => {
       })
     }
     getProducts()
-    setIsLoading(true)
+    // setIsLoading(true)
   }, [tabFocus, productsArray])
 
 
 
   const removeFavorite = async (itemId) => {
-
+    const userId = await getuserID()
     firebase
       .firestore()
       .collection("users")
@@ -121,59 +126,65 @@ const Favorites = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        data={productsArray}
-        renderItem={({ item }) => {
-          return (
-            <View style={styles.productItem}>
-              <Image source={{ uri: item.images[0] }} style={styles.productImage} />
-              <View style={styles.prodDescript}>
-                <Text style={[TextStyles.secondaryText,
-                TextStyles.nunito,
-                TextStyles.semiBold,
-                TextStyles.textSize1,
-                { marginBottom: 10 }
+      {
+        loading ? <Loader /> :
+          <>
+            <FlatList
+              data={productsArray}
+              renderItem={({ item }) => {
+                return (
+                  <TouchableOpacity activeOpacity={0.6} onPress={() => navigation.navigate("Product", { productData: item })} style={styles.productItem}>
+                    <Image source={{ uri: item.images[0] }} style={styles.productImage} />
+                    <View style={styles.prodDescript}>
+                      <Text style={[TextStyles.secondaryText,
+                      TextStyles.nunito,
+                      TextStyles.semiBold,
+                      TextStyles.textSize1,
+                      { marginBottom: 10 }
 
-                ]}>{item.name}</Text>
-                <Text
-                  style={[TextStyles.primaryText,
+                      ]}>{item.name}</Text>
+                      <Text
+                        style={[TextStyles.primaryText,
+                        TextStyles.nunito,
+                        TextStyles.bold,
+                        TextStyles.headerHeading]}
+                      >
+                        Rs. {item.price}
+                      </Text>
+                    </View>
+                    <View style={styles.iconContainer}>
+                      <TouchableOpacity
+                        style={styles.crossIcon}
+                        activeOpacity={0.8}
+                        onPress={() => removeFavorite(item.id)}
+                      >
+                        <CrossIcon />
+                      </TouchableOpacity>
+                      <TouchableOpacity style={styles.shoppingBag} activeOpacity={0.8}>
+                        <ShoppingBag fillColor={'black'} />
+                      </TouchableOpacity>
+                    </View>
+
+                  </TouchableOpacity>
+                );
+              }}
+              keyExtractor={item => item.id}
+            />
+
+            <View style={styles.buttonContainer}>
+              <PrimaryButton
+                title={'Add all to my cart'}
+                styles={[styles.button]}
+                textStyles={[
+                  TextStyles.semiBold,
+                  TextStyles.heading3,
                   TextStyles.nunito,
-                  TextStyles.bold,
-                  TextStyles.headerHeading]}
-                >
-                  Rs. {item.price}
-                </Text>
-              </View>
-              <View style={styles.iconContainer}>
-                <TouchableOpacity
-                  style={styles.crossIcon}
-                  activeOpacity={0.8}
-                  onPress={() => removeFavorite(item.id)}
-                >
-                  <CrossIcon />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.shoppingBag} activeOpacity={0.8}>
-                  <ShoppingBag fillColor={'black'} />
-                </TouchableOpacity>
-              </View>
-
+                ]}
+                onPress={allToCart}
+              />
             </View>
-          );
-        }}
-        keyExtractor={item => item.id}
-      />
-      <View style={styles.buttonContainer}>
-        <PrimaryButton
-          title={'Add all to my cart'}
-          styles={[styles.button]}
-          textStyles={[
-            TextStyles.semiBold,
-            TextStyles.heading3,
-            TextStyles.nunito,
-          ]}
-          onPress={allToCart}
-        />
-      </View>
+          </>
+      }
     </View>
   );
 };
@@ -220,7 +231,8 @@ const styles = StyleSheet.create({
     width: '92%',
     elevation: 5,
     marginBottom: 15,
-    marginTop: 15
+    marginTop: 15,
+
   },
   iconContainer: {
     justifyContent: 'space-between',
